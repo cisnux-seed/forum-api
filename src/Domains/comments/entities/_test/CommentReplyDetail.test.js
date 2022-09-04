@@ -64,7 +64,42 @@ describe('a CommentReplyDetail entity', () => {
   });
 
   describe('fromTable function', () => {
-    it('should create CommentReplyDetail object correctly', () => {
+    it('should return CommentReplyDetail object correctly when content has been deleted', () => {
+      // Arrange
+      const payload = {
+        id: 'chat-123',
+        content: 'a content',
+        username: 'user123',
+        date: '2020-01-01T00:00:00Z',
+        isDelete: true,
+        replies: [
+          {
+            id: 'reply-123',
+            content: 'a content',
+            date: '2020-02-01T00:00:00Z',
+            username: 'user127',
+          },
+        ],
+      };
+
+      // Action
+      const {
+        id,
+        username,
+        content,
+        date,
+        replies,
+      } = CommentReplyDetail.fromTable(payload);
+
+      // Assert
+      expect(id).toEqual(payload.id);
+      expect(username).toEqual(payload.username);
+      expect(content).toEqual('**komentar telah dihapus**');
+      expect(date).toEqual(payload.date);
+      expect(replies).toEqual(payload.replies);
+    });
+
+    it('should return CommentReplyDetail object correctly has not been deleted', () => {
       // Arrange
       const payload = {
         id: 'chat-123',
@@ -98,11 +133,12 @@ describe('a CommentReplyDetail entity', () => {
       expect(replies).toEqual(payload.replies);
     });
 
-    it('should create CommentReplyDetail object with empty replies', () => {
+    it('should return CommentReplyDetail object with empty replies', () => {
       // Arrange
       const payload = {
         id: 'chat-123',
         content: 'a content',
+        isDelete: false,
         username: 'user123',
         date: '2020-01-01T00:00:00Z',
         replies: null,

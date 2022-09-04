@@ -22,7 +22,26 @@ describe('ThreadRepository postgres', () => {
   });
 
   describe('addThread function', () => {
-    it('should add thread to database', async () => {
+    it('should persist add thread and return added thread correctly', async () => {
+      // Arrange
+      const addThread = new AddThread({
+        owner: 'user-123',
+        title: 'a thread',
+        body: 'a body',
+      });
+      await UsersTableTestHelper.addUser({});
+      const fakeIdGenerator = () => '123';
+      const threadRepository = new ThreadRepositoryPostgres(pool, fakeIdGenerator, new Date());
+
+      // Action
+      await threadRepository.addThread(addThread);
+
+      // Assert
+      const threads = await ThreadsTableTestHelper.findThreadById('thread-123');
+      expect(threads).toHaveLength(1);
+    });
+
+    it('should add thread to database correctly', async () => {
       // Arrange
       const addThread = new AddThread({
         owner: 'user-123',

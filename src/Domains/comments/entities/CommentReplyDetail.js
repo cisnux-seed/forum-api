@@ -30,14 +30,14 @@ class CommentReplyDetail {
   }
 
   static fromTable({
-    id, content, date, username, replies,
+    id, content, date, username, replies, isDelete,
   }) {
     return new CommentReplyDetail({
       id,
-      content,
+      content: !isDelete ? content : '**komentar telah dihapus**',
       date,
       username,
-      replies: !isUndefined(replies) ? replies.map((reply) => new ReplyDetail(reply)) : [],
+      replies: !isUndefined(replies) ? replies.map((reply) => ReplyDetail.fromTable(reply)) : [],
     });
   }
 }

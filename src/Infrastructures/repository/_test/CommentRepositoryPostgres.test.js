@@ -8,7 +8,6 @@ const AddComment = require('../../../Domains/comments/entities/AddComment');
 const AddedComment = require('../../../Domains/comments/entities/AddedComment');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const CommentReplyDetail = require('../../../Domains/comments/entities/CommentReplyDetail');
-const CommentDetail = require('../../../Domains/comments/entities/CommentDetail');
 const ThreadDetail = require('../../../Domains/threads/entities/ThreadDetail');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 
@@ -37,6 +36,50 @@ describe('CommentRepository postgres', () => {
 
       // Action and Assert
       await expect(commentRepository.addComment(addComment)).rejects.toThrow(NotFoundError);
+    });
+
+    it('should add comment correctly', async () => {
+      // Arrange
+      const addComment = new AddComment({
+        threadId: 'thread-123',
+        owner: 'user-123',
+        content: 'a content',
+      });
+      const expectedAddedComment = new AddedComment({
+        id: 'comment-123',
+        owner: 'user-123',
+        content: 'a content',
+      });
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
+      const fakeIdGenerator = () => '123';
+      const commentRepository = new CommentRepositoryPostgres(pool, fakeIdGenerator, new Date());
+
+      // Action
+      const addedComment = await commentRepository.addComment(addComment);
+
+      // Assert
+      expect(addedComment).toStrictEqual(expectedAddedComment);
+    });
+
+    it('should persist add comment and return added comment correctly', async () => {
+      // Arrange
+      const addComment = new AddComment({
+        threadId: 'thread-123',
+        owner: 'user-123',
+        content: 'a content',
+      });
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
+      const fakeIdGenerator = () => '123';
+      const commentRepository = new CommentRepositoryPostgres(pool, fakeIdGenerator, new Date());
+
+      // Action
+      await commentRepository.addComment(addComment);
+
+      // Assert
+      const comments = await CommentsTableTestHelper.findCommentById('comment-123');
+      expect(comments).toHaveLength(1);
     });
 
     it('should add comment correctly', async () => {

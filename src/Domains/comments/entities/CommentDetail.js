@@ -25,6 +25,18 @@ class CommentDetail {
       throw new Error('COMMENT_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }
+
+  static fromTable({
+    id, content, date, username, isDelete,
+  }) {
+    return new CommentDetail({
+      id,
+      content: !isDelete ? content : '**balasan telah dihapus**',
+      date,
+      username,
+      isDelete,
+    });
+  }
 }
 
 module.exports = CommentDetail;

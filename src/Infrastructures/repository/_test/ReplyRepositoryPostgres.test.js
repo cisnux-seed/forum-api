@@ -70,6 +70,32 @@ describe('ReplyRepository postgres', () => {
       await expect(replyRepository.addReply(addReply)).rejects.toThrow(NotFoundError);
     });
 
+    it('should persist add reply and return added reply correctly', async () => {
+      // Arrange
+      const addReply = new AddReply({
+        threadId: 'thread-123',
+        owner: 'user-125',
+        commentId: 'comment-123',
+        content: 'a content',
+      });
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
+      // create another user
+      await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
+      await UsersTableTestHelper.addUser({ id: 'user-125', username: 'user-b' });
+
+      await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124' });
+      const fakeIdGenerator = () => '123';
+      const replyRepository = new ReplyRepositoryPostgres(pool, fakeIdGenerator, new Date());
+
+      // Action
+      await replyRepository.addReply(addReply);
+      const replies = await CommentsTableTestHelper.findCommentById('comment-123');
+
+      // Assert
+      expect(replies).toHaveLength(1);
+    });
+
     it('should add reply correctly', async () => {
       // Arrange
       const addReply = new AddReply({

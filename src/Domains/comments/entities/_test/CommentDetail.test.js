@@ -46,4 +46,50 @@ describe('a CommentDetail entity', () => {
     expect(date).toEqual(payload.date);
     expect(username).toEqual(payload.username);
   });
+
+  describe('fromTable function', () => {
+    it('should return CommentDetail correctly when content has been deleted', () => {
+      // Arrange
+      const payload = {
+        id: 'chat-123',
+        content: 'a content',
+        date: '2020-01-01T00:00:00Z',
+        username: 'user123',
+        isDelete: true,
+      };
+
+      // Action
+      const {
+        id, content, date, username,
+      } = CommentDetail.fromTable(payload);
+
+      // Assert
+      expect(id).toEqual(payload.id);
+      expect(content).toEqual('**balasan telah dihapus**');
+      expect(date).toEqual(payload.date);
+      expect(username).toEqual(payload.username);
+    });
+
+    it('should return CommentDetail correctly when content has not been deleted', () => {
+      // Arrange
+      const payload = {
+        id: 'chat-123',
+        content: 'a content',
+        date: '2020-01-01T00:00:00Z',
+        username: 'user123',
+        isDelete: false,
+      };
+
+      // Action
+      const {
+        id, content, date, username,
+      } = CommentDetail.fromTable(payload);
+
+      // Assert
+      expect(id).toEqual(payload.id);
+      expect(content).toEqual(payload.content);
+      expect(date).toEqual(payload.date);
+      expect(username).toEqual(payload.username);
+    });
+  });
 });

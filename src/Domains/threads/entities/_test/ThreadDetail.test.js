@@ -1,5 +1,5 @@
 const CommentReplyDetail = require('../../../comments/entities/CommentReplyDetail');
-const CommentDetail = require('../../../comments/entities/CommentDetail');
+const ReplyDetail = require('../../../comments/entities/CommentDetail');
 const ThreadDetail = require('../ThreadDetail');
 
 describe('a ThreadDetail entity', () => {
@@ -47,7 +47,7 @@ describe('a ThreadDetail entity', () => {
           content: 'a content',
           date: '2020-01-01T00:00:00Z',
           replies: [
-            new CommentDetail({
+            new ReplyDetail({
               id: 'reply-127',
               username: 'user127',
               content: 'a content',
@@ -73,7 +73,7 @@ describe('a ThreadDetail entity', () => {
   });
 
   describe('fromTable function', () => {
-    it('should create ThreadDetail object correctly', () => {
+    it('should return ThreadDetail object correctly when comments and replies content has been deleted', () => {
       // Arrange
       const payload = {
         id: 'user-123',
@@ -86,11 +86,13 @@ describe('a ThreadDetail entity', () => {
             id: 'comment-123',
             username: 'user123',
             content: 'a content',
+            isDelete: true,
             date: '2020-01-01T00:00:00Z',
             replies: [
               {
                 id: 'reply-127',
                 username: 'user127',
+                isDelete: true,
                 content: 'a content',
                 date: '2020-04-01T00:00:00Z',
               },
@@ -99,18 +101,108 @@ describe('a ThreadDetail entity', () => {
         ],
       };
 
+      const expectedThreadDetail = new ThreadDetail({
+        id: 'user-123',
+        title: 'a title',
+        body: 'a body',
+        date: '2020-01-01T00:00:00Z',
+        username: 'user123',
+        comments: [
+          new CommentReplyDetail({
+            id: 'comment-123',
+            username: 'user123',
+            content: '**komentar telah dihapus**',
+            date: '2020-01-01T00:00:00Z',
+            replies: [
+              new ReplyDetail({
+                id: 'reply-127',
+                username: 'user127',
+                content: '**balasan telah dihapus**',
+                date: '2020-04-01T00:00:00Z',
+              }),
+            ],
+          }),
+        ],
+      });
+
       // Action
       const {
         id, title, body, date, username, comments,
       } = ThreadDetail.fromTable(payload);
 
       // Assert
-      expect(id).toEqual(payload.id);
-      expect(title).toEqual(payload.title);
-      expect(body).toEqual(payload.body);
-      expect(date).toEqual(payload.date);
-      expect(username).toEqual(payload.username);
-      expect(comments).toEqual(payload.comments);
+      expect(id).toEqual(expectedThreadDetail.id);
+      expect(title).toEqual(expectedThreadDetail.title);
+      expect(body).toEqual(expectedThreadDetail.body);
+      expect(date).toEqual(expectedThreadDetail.date);
+      expect(username).toEqual(expectedThreadDetail.username);
+      expect(comments).toEqual(expectedThreadDetail.comments);
+    });
+
+    it('should return ThreadDetail object correctly when comments or replies content has not been deleted', () => {
+      // Arrange
+      const payload = {
+        id: 'user-123',
+        title: 'a title',
+        body: 'a body',
+        date: '2020-01-01T00:00:00Z',
+        username: 'user123',
+        comments: [
+          {
+            id: 'comment-123',
+            username: 'user123',
+            content: 'a content',
+            isDelete: true,
+            date: '2020-01-01T00:00:00Z',
+            replies: [
+              {
+                id: 'reply-127',
+                username: 'user127',
+                isDelete: false,
+                content: 'a content',
+                date: '2020-04-01T00:00:00Z',
+              },
+            ],
+          },
+        ],
+      };
+
+      const expectedThreadDetail = new ThreadDetail({
+        id: 'user-123',
+        title: 'a title',
+        body: 'a body',
+        date: '2020-01-01T00:00:00Z',
+        username: 'user123',
+        comments: [
+          new CommentReplyDetail({
+            id: 'comment-123',
+            username: 'user123',
+            content: '**komentar telah dihapus**',
+            date: '2020-01-01T00:00:00Z',
+            replies: [
+              new ReplyDetail({
+                id: 'reply-127',
+                username: 'user127',
+                content: 'a content',
+                date: '2020-04-01T00:00:00Z',
+              }),
+            ],
+          }),
+        ],
+      });
+
+      // Action
+      const {
+        id, title, body, date, username, comments,
+      } = ThreadDetail.fromTable(payload);
+
+      // Assert
+      expect(id).toEqual(expectedThreadDetail.id);
+      expect(title).toEqual(expectedThreadDetail.title);
+      expect(body).toEqual(expectedThreadDetail.body);
+      expect(date).toEqual(expectedThreadDetail.date);
+      expect(username).toEqual(expectedThreadDetail.username);
+      expect(comments).toEqual(expectedThreadDetail.comments);
     });
 
     it('should create ThreadDetail object with empty comments', () => {
