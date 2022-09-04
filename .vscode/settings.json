@@ -1,0 +1,16 @@
+{
+  "jest.jestCommandLine": "jest --watchAll --coverage --setupFiles dotenv\\config -i",
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "database": "forumapi",
+      "username": "developer",
+      "password": "@Cisnux123",
+      "name": "Forum API Test"
+    }
+  ],
+  "cSpell.words": ["pino"]
+}

@@ -1,0 +1,128 @@
+const CommentDetail = require('../CommentDetail');
+const CommentReplyDetail = require('../CommentReplyDetail');
+
+describe('a CommentReplyDetail entity', () => {
+  it('should throw error when payload did not contain needed property', () => {
+    // Arrange
+    const payload = {
+      id: 'chat-123',
+      content: 'a content',
+      date: '2020-01-01T00:00:00Z',
+      username: 'user123',
+    };
+
+    // Action and Assert
+    expect(() => new CommentReplyDetail(payload)).toThrowError('COMMENT_REPLY_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY');
+  });
+
+  it('should throw error when payload did not meet data type specification', () => {
+    // Arrange
+    const payload = {
+      id: 2.1,
+      content: true,
+      date: false,
+      username: 'user123',
+      replies: 23,
+    };
+
+    // Action and Assert
+    expect(() => new CommentReplyDetail(payload)).toThrowError('COMMENT_REPLY_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
+  });
+
+  it('should create CommentReplyDetail object correctly', () => {
+    // Arrange
+    const payload = {
+      id: 'chat-123',
+      content: 'a content',
+      username: 'user123',
+      date: '2020-01-01T00:00:00Z',
+      replies: [
+        new CommentDetail({
+          id: 'reply-123',
+          content: 'a content',
+          date: '2020-02-01T00:00:00Z',
+          username: 'user127',
+        }),
+      ],
+    };
+
+    // Action
+    const {
+      id,
+      username,
+      content,
+      date,
+      replies,
+    } = new CommentReplyDetail(payload);
+
+    // Assert
+    expect(id).toEqual(payload.id);
+    expect(username).toEqual(payload.username);
+    expect(content).toEqual(payload.content);
+    expect(date).toEqual(payload.date);
+    expect(replies).toEqual(payload.replies);
+  });
+
+  describe('fromTable function', () => {
+    it('should create CommentReplyDetail object correctly', () => {
+      // Arrange
+      const payload = {
+        id: 'chat-123',
+        content: 'a content',
+        username: 'user123',
+        date: '2020-01-01T00:00:00Z',
+        replies: [
+          {
+            id: 'reply-123',
+            content: 'a content',
+            date: '2020-02-01T00:00:00Z',
+            username: 'user127',
+          },
+        ],
+      };
+
+      // Action
+      const {
+        id,
+        username,
+        content,
+        date,
+        replies,
+      } = CommentReplyDetail.fromTable(payload);
+
+      // Assert
+      expect(id).toEqual(payload.id);
+      expect(username).toEqual(payload.username);
+      expect(content).toEqual(payload.content);
+      expect(date).toEqual(payload.date);
+      expect(replies).toEqual(payload.replies);
+    });
+
+    it('should create CommentReplyDetail object with empty replies', () => {
+      // Arrange
+      const payload = {
+        id: 'chat-123',
+        content: 'a content',
+        username: 'user123',
+        date: '2020-01-01T00:00:00Z',
+        replies: null,
+      };
+
+      // Action
+      const {
+        id,
+        username,
+        content,
+        date,
+        replies,
+      } = CommentReplyDetail.fromTable(payload);
+
+      // Assert
+      expect(id).toEqual(payload.id);
+      expect(username).toEqual(payload.username);
+      expect(content).toEqual(payload.content);
+      expect(date).toEqual(payload.date);
+      expect(replies).toEqual([]);
+    });
+  });
+});
