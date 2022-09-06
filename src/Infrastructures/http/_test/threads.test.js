@@ -123,7 +123,7 @@ describe('/threads endpoint', () => {
     });
   });
 
-  describe('when GET /threads', () => {
+  describe('when GET /threads/{id}', () => {
     it('should response 200 and return thread detail', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({});

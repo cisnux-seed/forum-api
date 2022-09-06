@@ -58,24 +58,8 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
   async getThreadById(id) {
     const query = {
-      text: `SELECT row_to_json(threads) 
-      AS thread FROM(
-        SELECT threads.id, title, body, date, username, (
-          SELECT json_agg(comments) AS comments FROM(
-            SELECT comments.id, username, content, date, is_delete AS "isDelete", (
-              SELECT json_agg(replies) AS replies FROM(
-                SELECT replies.id, username, content, date, is_delete AS "isDelete" FROM replies
-                  INNER JOIN users ON replies.owner = users.id
-                  WHERE replies.thread_id = threads.id AND replies.comment_id = comments.id
-                  ORDER BY replies.date ASC
-              ) replies
-            ) FROM comments
-            INNER JOIN users ON comments.owner = users.id
-            WHERE comments.thread_id = threads.id ORDER BY comments.date ASC
-          ) comments
-        )
-        FROM threads INNER JOIN users ON threads.owner = users.id
-      ) threads WHERE id=$1`,
+      text: `SELECT threads.id AS id, title, body, date, username 
+      FROM threads INNER JOIN users ON threads.owner = users.id WHERE threads.id = $1`,
       values: [id],
     };
 
@@ -92,7 +76,8 @@ class ThreadRepositoryPostgres extends ThreadRepository {
       }, "thread doesn't exist");
       throw new NotFoundError('thread tidak ditemukan di database');
     }
-    return ThreadDetail.fromTable(result.rows[0].thread);
+
+    return result.rows[0];
   }
 }
 

@@ -1,17 +1,32 @@
 require('../../Commons/utils/empty_string_validation');
 const isUndefined = require('../../Commons/utils/undefined_variable_validation');
+const ThreadDetail = require('../../Domains/threads/entities/ThreadDetail');
 
 class GetThreadDetailUseCase {
   #threadRepository;
 
-  constructor({ threadRepository }) {
+  #commentRepository;
+
+  #replyRepository;
+
+  constructor({ threadRepository, commentRepository, replyRepository }) {
     this.#threadRepository = threadRepository;
+    this.#commentRepository = commentRepository;
+    this.#replyRepository = replyRepository;
   }
 
   async execute(useCasePayload) {
     this.#validatePayload(useCasePayload);
+    const comments = await this.#commentRepository.getCommentsByThreadId(useCasePayload);
+    const replies = await this.#replyRepository
+      .getRepliesByCommentIds(comments.map((comment) => comment.id));
     const threadDetail = await this.#threadRepository.getThreadById(useCasePayload);
-    return threadDetail;
+    threadDetail.comments = comments
+      .map((comment) => ({
+        ...comment,
+        replies: replies.filter((reply) => reply.commentId === comment.id),
+      }));
+    return ThreadDetail.fromTable(threadDetail);
   }
 
   #validatePayload(threadId) {

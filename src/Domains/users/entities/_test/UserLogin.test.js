@@ -1,7 +1,7 @@
 const UserLogin = require('../UserLogin');
 
 describe('UserLogin entity', () => {
-  it('should throw error when payload does not contain needed property', () => {
+  it('should throw error when payload does not exist contain needed property', () => {
     // Arrange
     const payload = {
       username: 'dicoding',

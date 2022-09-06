@@ -8,10 +8,6 @@ const ReplyRepositoryPostgres = require('../ReplyRepositoryPostgres');
 const AddReply = require('../../../Domains/replies/entities/AddReply');
 const AddedReply = require('../../../Domains/comments/entities/AddedComment');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
-const ThreadDetail = require('../../../Domains/threads/entities/ThreadDetail');
-const CommentReplyDetail = require('../../../Domains/comments/entities/CommentReplyDetail');
-const CommentDetail = require('../../../Domains/comments/entities/CommentDetail');
-const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 
 describe('ReplyRepository postgres', () => {
   afterEach(async () => {
@@ -26,7 +22,7 @@ describe('ReplyRepository postgres', () => {
   });
 
   describe('addReply function', () => {
-    it('should throw an error when thread is not exist', async () => {
+    it('should throw an error when thread does not exist', async () => {
       // Arrange
       const addReply = new AddReply({
         threadId: 'thread-127',
@@ -48,7 +44,7 @@ describe('ReplyRepository postgres', () => {
       await expect(replyRepository.addReply(addReply)).rejects.toThrow(NotFoundError);
     });
 
-    it('should throw an error when comment is not exist', async () => {
+    it('should throw an error when comment does not exist', async () => {
       // Arrange
       const addReply = new AddReply({
         threadId: 'thread-123',
@@ -96,7 +92,7 @@ describe('ReplyRepository postgres', () => {
       expect(replies).toHaveLength(1);
     });
 
-    it('should add reply correctly', async () => {
+    it('should add reply and return added reply correctly', async () => {
       // Arrange
       const addReply = new AddReply({
         threadId: 'thread-123',
@@ -193,33 +189,33 @@ describe('ReplyRepository postgres', () => {
   });
 
   describe('deleteReply function', () => {
-    it('should not throw an error when reply is exist', async () => {
+    it('should throw an error when reply does not exist', async () => {
       // Arrange
-      const expectedThreadDetailAfterDeleteReply = new ThreadDetail({
-        id: 'thread-123',
-        title: 'a title',
-        body: 'a body',
-        date: '2020-01-01T00:00:00',
-        username: 'dicoding',
-        comments: [
-          new CommentReplyDetail({
-            id: 'comment-123',
-            username: 'user-a',
-            content: 'a content',
-            date: '2020-01-01T00:00:00',
-            replies: [
-              new CommentDetail({
-                id: 'reply-123',
-                username: 'user-b',
-                content: '**balasan telah dihapus**',
-                date: '2020-01-01T00:00:00',
-              }),
-            ],
-          }),
-        ],
-      });
       const replyRepository = new ReplyRepositoryPostgres(pool);
-      const threadRepository = new ThreadRepositoryPostgres(pool);
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T00:00:00' });
+      // create another user
+      await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
+      await UsersTableTestHelper.addUser({ id: 'user-125', username: 'user-b' });
+      await CommentsTableTestHelper.addComment({
+        threadId: 'thread-123',
+        owner: 'user-124',
+        date: '2020-01-01T00:00:00',
+      });
+      await RepliesTableTestHelper.addReply({
+        commentId: 'comment-123',
+        threadId: 'thread-123',
+        owner: 'user-125',
+        date: '2020-01-01T00:00:00',
+      });
+
+      // Action and Assert
+      await expect(replyRepository.deleteReplyById('reply-131')).rejects.toThrow(NotFoundError);
+    });
+
+    it('should not throw an error when reply exists', async () => {
+      // Arrange
+      const replyRepository = new ReplyRepositoryPostgres(pool);
       await UsersTableTestHelper.addUser({});
       await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T00:00:00' });
       // create another user
@@ -241,9 +237,46 @@ describe('ReplyRepository postgres', () => {
       await expect(replyRepository.deleteReplyById('reply-123')).resolves.not.toThrow(NotFoundError);
       const replies = await RepliesTableTestHelper.findReplyById('reply-123');
       expect(replies[0].is_delete).toBeTruthy();
+    });
+  });
 
-      const threadDetail = await threadRepository.getThreadById('thread-123');
-      expect(threadDetail).toStrictEqual(expectedThreadDetailAfterDeleteReply);
+  describe('getRepliesByCommentIds', () => {
+    it('should return replies by comment ids correctly', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T00:00:00' });
+      // create another user
+      await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
+      await CommentsTableTestHelper.addComment({
+        threadId: 'thread-123',
+        owner: 'user-124',
+        date: '2020-01-01T00:00:00',
+      });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-124',
+        threadId: 'thread-123',
+        owner: 'user-124',
+        date: '2020-01-01T00:00:00',
+      });
+      await UsersTableTestHelper.addUser({ id: 'user-125', username: 'cisnux' });
+      await RepliesTableTestHelper.addReply({
+        commentId: 'comment-123',
+        threadId: 'thread-123',
+        owner: 'user-125',
+      });
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-124',
+        commentId: 'comment-123',
+        threadId: 'thread-123',
+        owner: 'user-125',
+      });
+
+      // Action
+      const replyRepository = new ReplyRepositoryPostgres(pool);
+      const repliesDetail = await replyRepository.getRepliesByCommentIds(['comment-123']);
+
+      // Assert
+      expect(repliesDetail).toHaveLength(2);
     });
   });
 });

@@ -99,7 +99,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     };
 
     await this.#pool.query('BEGIN');
-    await this.#pool.query(query).catch(/* istanbul ignore next */async (error) => {
+    const result = await this.#pool.query(query).catch(/* istanbul ignore next */async (error) => {
       /* istanbul ignore next */await this.#pool.query('ROLLBACK');
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
@@ -107,6 +107,30 @@ class CommentRepositoryPostgres extends CommentRepository {
       }, error.message);
     });
     await this.#pool.query('COMMIT');
+
+    if (!result.rowCount) {
+    /* istanbul ignore next */logger.debug({
+        error: NotFoundError.name,
+      }, "comment doesn't exist");
+      throw new NotFoundError('comment tidak ditemukan di database');
+    }
+  }
+
+  async getCommentsByThreadId(threadId) {
+    const query = {
+      text: `SELECT comments.id AS id, content, date, username, is_delete AS "isDelete"
+      FROM comments INNER JOIN users ON comments.owner = users.id WHERE comments.thread_id = $1 ORDER BY date ASC`,
+      values: [threadId],
+    };
+
+    const result = await this.#pool.query(query).catch(/* istanbul ignore next */(error) => {
+      /* istanbul ignore next */logger.debug({
+        postgres_error_code: error.code,
+        error: 'Server Error',
+      }, error.message);
+    });
+
+    return result.rows;
   }
 }
 

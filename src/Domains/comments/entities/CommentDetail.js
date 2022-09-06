@@ -32,7 +32,7 @@ class CommentDetail {
     return new CommentDetail({
       id,
       content: !isDelete ? content : '**balasan telah dihapus**',
-      date,
+      date: date.toString(),
       username,
       isDelete,
     });

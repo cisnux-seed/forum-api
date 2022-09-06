@@ -5,11 +5,6 @@ const pool = require('../../database/postgres/pool');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 const AddThread = require('../../../Domains/threads/entities/AddThread');
 const AddedThread = require('../../../Domains/threads/entities/AddedThread');
-const CommentReplyDetail = require('../../../Domains/comments/entities/CommentReplyDetail');
-const CommentDetail = require('../../../Domains/comments/entities/CommentDetail');
-const ThreadDetail = require('../../../Domains/threads/entities/ThreadDetail');
-const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
-const RepliesTableTestHelper = require('../../../../tests/RepliesTableTestHelper');
 
 describe('ThreadRepository postgres', () => {
   afterEach(async () => {
@@ -41,7 +36,7 @@ describe('ThreadRepository postgres', () => {
       expect(threads).toHaveLength(1);
     });
 
-    it('should add thread to database correctly', async () => {
+    it('should add thread and return added thread correctly', async () => {
       // Arrange
       const addThread = new AddThread({
         owner: 'user-123',
@@ -102,52 +97,19 @@ describe('ThreadRepository postgres', () => {
 
     it('should return thread by id correctly', async () => {
       // Arrange
-      const expectedThreadDetail = new ThreadDetail({
-        id: 'thread-123',
-        title: 'a title',
-        body: 'a body',
-        date: '2020-01-01T00:00:00',
-        username: 'dicoding',
-        comments: [
-          new CommentReplyDetail({
-            id: 'comment-123',
-            username: 'user-a',
-            content: 'a content',
-            date: '2020-01-01T00:00:00',
-            replies: [
-              new CommentDetail({
-                id: 'reply-123',
-                username: 'user-b',
-                content: 'a content',
-                date: '2020-01-01T00:00:00',
-              }),
-            ],
-          }),
-        ],
-      });
       await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T00:00:00' });
-      // create another user
-      await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
-      await CommentsTableTestHelper.addComment({
-        threadId: 'thread-123',
-        owner: 'user-124',
-        date: '2020-01-01T00:00:00',
-      });
-      await UsersTableTestHelper.addUser({ id: 'user-125', username: 'user-b' });
-      await RepliesTableTestHelper.addReply({
-        commentId: 'comment-123',
-        threadId: 'thread-123',
-        owner: 'user-125',
-        date: '2020-01-01T00:00:00',
-      });
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T12:00:00.000Z' });
 
       // Action
       const threadRepository = new ThreadRepositoryPostgres(pool);
       const threadDetail = await threadRepository.getThreadById('thread-123');
 
       // Assert
-      expect(threadDetail).toStrictEqual(expectedThreadDetail);
+      expect(threadDetail.id).toStrictEqual('thread-123');
+      expect(threadDetail.title).toBeDefined();
+      expect(threadDetail.body).toBeDefined();
+      expect(threadDetail.date).toBeDefined();
+      expect(threadDetail.username).toBeDefined();
     });
   });
 });

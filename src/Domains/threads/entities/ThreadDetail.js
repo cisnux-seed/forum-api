@@ -40,7 +40,7 @@ class ThreadDetail {
         id,
         title,
         body,
-        date,
+        date: date.toString(),
         username,
         comments: !isUndefined(comments)
           ? comments.map((comment) => CommentReplyDetail.fromTable(comment)) : [],

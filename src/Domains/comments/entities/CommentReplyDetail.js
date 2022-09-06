@@ -35,7 +35,7 @@ class CommentReplyDetail {
     return new CommentReplyDetail({
       id,
       content: !isDelete ? content : '**komentar telah dihapus**',
-      date,
+      date: date.toString(),
       username,
       replies: !isUndefined(replies) ? replies.map((reply) => ReplyDetail.fromTable(reply)) : [],
     });

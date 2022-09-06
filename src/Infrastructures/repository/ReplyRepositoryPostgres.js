@@ -107,7 +107,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
     };
 
     await this.#pool.query('BEGIN');
-    await this.#pool.query(query).catch(/* istanbul ignore next */async (error) => {
+    const result = await this.#pool.query(query).catch(/* istanbul ignore next */async (error) => {
       /* istanbul ignore next */await this.#pool.query('ROLLBACK');
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
@@ -115,6 +115,29 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       }, error.message);
     });
     await this.#pool.query('COMMIT');
+    if (!result.rowCount) {
+      /* istanbul ignore next */logger.debug({
+        error: NotFoundError.name,
+      }, "reply doesn't exist");
+      throw new NotFoundError('reply tidak ditemukan di database');
+    }
+  }
+
+  async getRepliesByCommentIds(commentIds) {
+    const query = {
+      text: `SELECT replies.id AS id, content, date, username, comment_id AS "commentId", is_delete AS "isDelete"
+      FROM replies INNER JOIN users ON replies.owner = users.id WHERE replies.comment_id = ANY($1) ORDER BY date ASC`,
+      values: [commentIds],
+    };
+
+    const result = await this.#pool.query(query).catch(/* istanbul ignore next */(error) => {
+      /* istanbul ignore next */logger.debug({
+        postgres_error_code: error.code,
+        error: 'Server Error',
+      }, error.message);
+    });
+
+    return result.rows;
   }
 }
 
