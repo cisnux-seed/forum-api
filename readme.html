@@ -2,7 +2,7 @@
     <html>
     <head>
         <meta charset="UTF-8">
-        <title></title>
+        <title>Forum RESTful API</title>
         <style>
 /* From extension vscode.github */
 /*---------------------------------------------------------------------------------------------
@@ -1356,7 +1356,487 @@ body,
     </head>
     <body class="vscode-body vscode-light">
         <div class="github-markdown-body github-markdown-auto">
-            <div class="github-markdown-content"><p>#Forum API</p>
+            <div class="github-markdown-content"><h1 id="forum-restful-api">Forum RESTful API</h1>
+<p>This is a open source Forum RESTful API project. This project written with javascript and Hapi Framework. This API providing authentications with implemented JWT (Token-Based Authentication). You can also contribute this project</p>
+<h2 id="feature-list">Feature List</h2>
+<ul>
+<li>Register an account with username and password</li>
+<li>Login with registered account</li>
+<li>Update expired access token with refresh token</li>
+<li>Logout with account already logged in</li>
+<li>Add a thread</li>
+<li>Get a specific thread</li>
+<li>Add a comment</li>
+<li>Delete a comment with specific thread</li>
+<li>Add a reply to specific comment</li>
+<li>Delete a reply with specific thread and comment</li>
+</ul>
+<h1 id="installation">Installation</h1>
+<pre><code><code><div>git clone https://github.com/cisnux-seed/forum-api.git
+npm install
+</div></code></code></pre>
+<h1 id="rest-endpoints">REST Endpoints</h1>
+<h2 id="register-an-account-with-username-and-password">Register an account with username and password</h2>
+<h3 id="request">Request</h3>
+<blockquote>
+<p>POST /users</p>
+</blockquote>
+<ul>
+<li>cURL</li>
+</ul>
+<pre><code><code><div>curl --location --request POST 'http://localhost:5000/users' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    &quot;username&quot;: &quot;ezio&quot;,
+    &quot;password&quot;: &quot;secret&quot;,
+    &quot;fullname&quot;: &quot;ezio auditore&quot;
+}'
+</div></code></code></pre>
+<ul>
+<li>Javascript</li>
+</ul>
+<pre><code><code><div>var myHeaders = new Headers();
+myHeaders.append(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+var raw = JSON.stringify({
+  &quot;username&quot;: &quot;ezio&quot;,
+  &quot;password&quot;: &quot;secret&quot;,
+  &quot;fullname&quot;: &quot;ezio auditore&quot;
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch(&quot;http://localhost:5000/users&quot;, requestOptions)
+  .then(response =&gt; response.text())
+  .then(result =&gt; console.log(result))
+  .catch(error =&gt; console.log('error', error));
+</div></code></code></pre>
+<h3 id="response">Response</h3>
+<pre><code><code><div>{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;data&quot;: {
+        &quot;addedUser&quot;: {
+            &quot;id&quot;: &quot;user-123&quot;,
+            &quot;username&quot;: &quot;ezio&quot;,
+            &quot;fullname&quot;: &quot;ezio auditore&quot;
+        }
+    }
+}
+</div></code></code></pre>
+<h2 id="login-with-registered-account">Login with registered account</h2>
+<h3 id="request-1">Request</h3>
+<blockquote>
+<p>POST /authentications</p>
+</blockquote>
+<ul>
+<li>cURL</li>
+</ul>
+<pre><code><code><div>curl --location --request POST 'http://localhost:5000/authentications' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    &quot;username&quot;: &quot;ezio&quot;,
+    &quot;password&quot;: &quot;secret&quot;
+}'
+</div></code></code></pre>
+<ul>
+<li>Javascript</li>
+</ul>
+<pre><code><code><div>var myHeaders = new Headers();
+myHeaders.append(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+var raw = JSON.stringify({
+  &quot;username&quot;: &quot;ezio&quot;,
+  &quot;password&quot;: &quot;secret&quot;
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch(&quot;http://localhost:5000/authentications&quot;, requestOptions)
+  .then(response =&gt; response.text())
+  .then(result =&gt; console.log(result))
+  .catch(error =&gt; console.log('error', error));
+</div></code></code></pre>
+<h3 id="response-1">Response</h3>
+<pre><code><code><div>{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;data&quot;: {
+        &quot;accessToken&quot;: &quot;xxxaccesstoken&quot;,
+        &quot;refreshToken&quot;: &quot;xxxrefreshtoken&quot;
+    }
+}
+</div></code></code></pre>
+<h2 id="update-expired-access-token-with-refresh-token">Update expired access token with refresh token</h2>
+<h3 id="request-2">Request</h3>
+<blockquote>
+<p>PUT /authentications</p>
+</blockquote>
+<ul>
+<li>cURL</li>
+</ul>
+<pre><code><code><div>curl --location --request PUT 'http://localhost:5000/authentications' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    &quot;refreshToken&quot;: &quot;xxxrefreshtoken&quot;
+}'
+</div></code></code></pre>
+<ul>
+<li>Javascript</li>
+</ul>
+<pre><code><code><div>var myHeaders = new Headers();
+myHeaders.append(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+var raw = JSON.stringify({
+  &quot;refreshToken&quot;: &quot;xxxrefreshtoken&quot;
+});
+
+var requestOptions = {
+  method: 'PUT',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch(&quot;http://localhost:5000/authentications&quot;, requestOptions)
+  .then(response =&gt; response.text())
+  .then(result =&gt; console.log(result))
+  .catch(error =&gt; console.log('error', error));
+</div></code></code></pre>
+<h3 id="response-2">Response</h3>
+<pre><code><code><div>{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;data&quot;: {
+        &quot;accessToken&quot;: &quot;xxxnewaccesstoken&quot;
+    }
+}
+</div></code></code></pre>
+<h2 id="logout-with-account-already-logged-in">Logout with account already logged in</h2>
+<h3 id="request-3">Request</h3>
+<blockquote>
+<p>DELETE /authentications</p>
+</blockquote>
+<ul>
+<li>cURL</li>
+</ul>
+<pre><code><code><div>curl --location --request DELETE 'http://localhost:5000/authentications' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    &quot;refreshToken&quot;: &quot;xxxrefreshtoken&quot;
+}'
+</div></code></code></pre>
+<ul>
+<li>Javascript</li>
+</ul>
+<pre><code><code><div>var myHeaders = new Headers();
+myHeaders.append(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+var raw = JSON.stringify({
+  &quot;refreshToken&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpY29kaW5nIiwiaWQiOiJ1c2VyLURCcWUzaEN0TEo5RkN4bHEyUnd0TSIsImlhdCI6MTY2MjQ4NTgzOH0.6bC9AHcfYInd4R8rtCW9n_UeRKdrzpOkSEZ9BJEslco&quot;
+});
+
+var requestOptions = {
+  method: 'DELETE',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch(&quot;http://localhost:5000/authentications&quot;, requestOptions)
+  .then(response =&gt; response.text())
+  .then(result =&gt; console.log(result))
+  .catch(error =&gt; console.log('error', error));
+</div></code></code></pre>
+<h3 id="response-3">Response</h3>
+<pre><code><code><div>{
+    &quot;status&quot;: &quot;success&quot;
+}
+</div></code></code></pre>
+<h2 id="add-a-thread">Add a thread</h2>
+<h3 id="request-4">Request</h3>
+<blockquote>
+<p>POST /threads</p>
+</blockquote>
+<ul>
+<li>cURL</li>
+</ul>
+<pre><code><code><div>curl --location --request POST 'http://localhost:5000/threads' \
+--header 'Authorization: Bearer xxxaccesstoken' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    &quot;title&quot;: &quot;a title&quot;,
+    &quot;body&quot;: &quot;a body&quot;
+}'
+</div></code></code></pre>
+<ul>
+<li>Javascript</li>
+</ul>
+<pre><code><code><div>var myHeaders = new Headers();
+myHeaders.append(&quot;Authorization&quot;, &quot;Bearer xxxaccesstoken&quot;);
+myHeaders.append(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+var raw = JSON.stringify({
+  &quot;title&quot;: &quot;a title&quot;,
+  &quot;body&quot;: &quot;a body&quot;
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch(&quot;http://localhost:5000/threads&quot;, requestOptions)
+  .then(response =&gt; response.text())
+  .then(result =&gt; console.log(result))
+  .catch(error =&gt; console.log('error', error));
+</div></code></code></pre>
+<h3 id="response-4">Response</h3>
+<pre><code><code><div>{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;data&quot;: {
+        &quot;addedThread&quot;: {
+            &quot;id&quot;: &quot;thread-123&quot;,
+            &quot;owner&quot;: &quot;user-123&quot;,
+            &quot;title&quot;: &quot;a thread&quot;
+        }
+    }
+}
+</div></code></code></pre>
+<h2 id="get-a-specific-thread">Get a specific thread</h2>
+<h3 id="request-5">Request</h3>
+<blockquote>
+<p>GET /threads/{id}</p>
+</blockquote>
+<ul>
+<li>cURL</li>
+</ul>
+<pre><code><code><div>curl --location --request GET 'http://localhost:5000/threads/thread-123'
+</div></code></code></pre>
+<ul>
+<li>Javascript</li>
+</ul>
+<pre><code><code><div>var requestOptions = {
+  method: 'GET',
+  redirect: 'follow'
+};
+
+fetch(&quot;http://localhost:5000/threads/thread-123&quot;, requestOptions)
+  .then(response =&gt; response.text())
+  .then(result =&gt; console.log(result))
+  .catch(error =&gt; console.log('error', error));
+</div></code></code></pre>
+<h3 id="response-5">Response</h3>
+<pre><code><code><div>{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;data&quot;: {
+        &quot;thread&quot;: {
+            &quot;id&quot;: &quot;thread-123&quot;,
+            &quot;title&quot;: &quot;a thread&quot;,
+            &quot;body&quot;: &quot;a body&quot;,
+            &quot;date&quot;: &quot;Wed Sep 07 2022 01:35:46 GMT+0700 (Indochina Time)&quot;,
+            &quot;username&quot;: &quot;levi&quot;,
+            &quot;comments&quot;: [
+                {
+                    &quot;id&quot;: &quot;comment-123&quot;,
+                    &quot;content&quot;: &quot;a content&quot;,
+                    &quot;date&quot;: &quot;Wed Sep 07 2022 01:35:46 GMT+0700 (Indochina Time)&quot;,
+                    &quot;username&quot;: &quot;eren&quot;,
+                    &quot;replies&quot;: [
+                        {
+                            &quot;id&quot;: &quot;reply-123&quot;,
+                            &quot;content&quot;: &quot;a content&quot;,
+                            &quot;date&quot;: &quot;Wed Sep 07 2022 01:35:56 GMT+0700 (Indochina Time)&quot;,
+                            &quot;username&quot;: &quot;ezio&quot;
+                        },
+                        {
+                            &quot;id&quot;: &quot;reply-124&quot;,
+                            &quot;content&quot;: &quot;a content&quot;,
+                            &quot;date&quot;: &quot;Wed Sep 07 2022 01:35:59 GMT+0700 (Indochina Time)&quot;,
+                            &quot;username&quot;: &quot;cisnux&quot;
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
+</div></code></code></pre>
+<h2 id="add-a-comment">Add a comment</h2>
+<h3 id="request-6">Request</h3>
+<blockquote>
+<p>POST /comments</p>
+</blockquote>
+<ul>
+<li>cURL</li>
+</ul>
+<pre><code><code><div>curl --location --request POST 'http://localhost:5000/threads/thread-123/comments/comment-123/replies' \
+--header 'Authorization: Bearer xxxaccesstoken' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    &quot;content&quot;: &quot;a content&quot;
+}'
+</div></code></code></pre>
+<ul>
+<li>Javascript</li>
+</ul>
+<pre><code><code><div>var myHeaders = new Headers();
+myHeaders.append(&quot;Authorization&quot;, &quot;Bearer xxxaccesstoken&quot;);
+myHeaders.append(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+var raw = JSON.stringify({
+  &quot;content&quot;: &quot;a content&quot;
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch(&quot;http://localhost:5000/threads/thread-gV33b1AZN-0nh8u3q3MOk/comments/comment-Y-tUgVRnWyBDcw2WWjMxv/replies&quot;, requestOptions)
+  .then(response =&gt; response.text())
+  .then(result =&gt; console.log(result))
+  .catch(error =&gt; console.log('error', error));
+</div></code></code></pre>
+<h3 id="response-6">Response</h3>
+<pre><code><code><div>{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;data&quot;: {
+        &quot;addedComment&quot;: {
+            &quot;id&quot;: &quot;comment-ZWQ617BRXuFBjRH7KYTI7&quot;,
+            &quot;owner&quot;: &quot;user-1_M9c0rYBStKs62Ryad2g&quot;,
+            &quot;content&quot;: &quot;sebuah comment&quot;
+        }
+    }
+}
+</div></code></code></pre>
+<h2 id="delete-a-comment-with-specific">Delete a comment with specific</h2>
+<h3 id="request-7">Request</h3>
+<blockquote>
+<p>DELETE /comments/{id}</p>
+</blockquote>
+<ul>
+<li>cURL</li>
+</ul>
+<pre><code><code><div>curl --location --request DELETE 'http://localhost:5000/threads/thread-123/comments/comment-123' \
+--header 'Authorization: Bearer xxxaccesstoken'
+</div></code></code></pre>
+<ul>
+<li>Javascript</li>
+</ul>
+<pre><code><code><div>var myHeaders = new Headers();
+myHeaders.append(&quot;Authorization&quot;, &quot;Bearer xxxaccesstoken&quot;);
+
+var requestOptions = {
+  method: 'DELETE',
+  headers: myHeaders,
+  redirect: 'follow'
+};
+
+fetch(&quot;http://localhost:5000/threads/thread-123/comments/comment-123&quot;, requestOptions)
+  .then(response =&gt; response.text())
+  .then(result =&gt; console.log(result))
+  .catch(error =&gt; console.log('error', error));
+</div></code></code></pre>
+<h3 id="response-7">Response</h3>
+<pre><code><code><div>{
+    &quot;status&quot;: &quot;success&quot;
+}
+</div></code></code></pre>
+<h2 id="add-a-reply-to-specific-comment">Add a reply to specific comment</h2>
+<h3 id="request-8">Request</h3>
+<blockquote>
+<p>POST /replies</p>
+</blockquote>
+<ul>
+<li>cURL</li>
+</ul>
+<pre><code><code><div>curl --location --request POST 'http://localhost:5000/threads/thread-123/comments/comment-123/replies' \
+--header 'Authorization: Bearer xxxaccesstoken' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    &quot;content&quot;: &quot;a content&quot;
+}'
+</div></code></code></pre>
+<ul>
+<li>Javascript</li>
+</ul>
+<pre><code><code><div>var myHeaders = new Headers();
+myHeaders.append(&quot;Authorization&quot;, &quot;Bearer xxxaccesstoken&quot;);
+myHeaders.append(&quot;Content-Type&quot;, &quot;application/json&quot;);
+
+var raw = JSON.stringify({
+  &quot;content&quot;: &quot;a content&quot;
+});
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch(&quot;http://localhost:5000/threads/thread-123/comments/comment-123/replies&quot;, requestOptions)
+  .then(response =&gt; response.text())
+  .then(result =&gt; console.log(result))
+  .catch(error =&gt; console.log('error', error));
+</div></code></code></pre>
+<h3 id="response-8">Response</h3>
+<pre><code><code><div>{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;data&quot;: {
+        &quot;addedReply&quot;: {
+            &quot;id&quot;: &quot;reply-123&quot;,
+            &quot;owner&quot;: &quot;user-123&quot;,
+            &quot;content&quot;: &quot;a content&quot;
+        }
+    }
+}
+</div></code></code></pre>
+<h2 id="delete-a-reply-with-specific-thread-and-comment">Delete a reply with specific thread and comment</h2>
+<h3 id="request-9">Request</h3>
+<blockquote>
+<p>DELETE /replies/{id}</p>
+</blockquote>
+<ul>
+<li>cURL</li>
+</ul>
+<pre><code><code><div>curl --location --request DELETE 'http://localhost:5000/threads/thread-123/comments/comment-123/replies/reply-123' \
+--header 'Authorization: Bearer xxxaccesstoken'
+</div></code></code></pre>
+<ul>
+<li>Javascript</li>
+</ul>
+<pre><code><code><div>var myHeaders = new Headers();
+myHeaders.append(&quot;Authorization&quot;, &quot;Bearer xxxaccesstoken&quot;);
+
+var requestOptions = {
+  method: 'DELETE',
+  headers: myHeaders,
+  redirect: 'follow'
+};
+
+fetch(&quot;http://localhost:5000/threads/thread-gV33b1AZN-0nh8u3q3MOk/comments/comment-Y-tUgVRnWyBDcw2WWjMxv/replies/reply-6qacSSFoHTAMzurkBNgXb&quot;, requestOptions)
+  .then(response =&gt; response.text())
+  .then(result =&gt; console.log(result))
+  .catch(error =&gt; console.log('error', error));
+</div></code></code></pre>
+<h3 id="response-9">Response</h3>
+<pre><code><code><div>{
+    &quot;status&quot;: &quot;success&quot;
+}
+</div></code></code></pre>
 </div>
         </div>
         
