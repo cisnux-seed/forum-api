@@ -1,5 +1,5 @@
 # Forum RESTful API
-This is an open source Forum RESTful API project. This project written with javascript and Hapi Framework. Forum API providing authentications with implemented JWT (Token-Based Authentication). This API also implemented automation tests and clean architecture. You can also contribute this project
+This is an open source Forum RESTful API project. This project written with javascript and Hapi Framework. Forum API providing authentications with implemented JWT (Token-Based Authentication). This RESTful API project implemented automation tests and clean architecture. You can also contribute this project
 
 ## Feature List
 - Register an account with username and password
