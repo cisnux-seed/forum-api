@@ -38,7 +38,7 @@ class UserRepositoryPostgres extends UserRepository {
       }, error.message);
     });
     await this.#pool.query('COMMIT');
-    return new RegisteredUser({ ...result.rows[0] });
+    return new RegisteredUser(result.rows[0]);
   }
 
   async getPasswordByUsername(username) {

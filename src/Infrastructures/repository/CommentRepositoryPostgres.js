@@ -44,7 +44,7 @@ class CommentRepositoryPostgres extends CommentRepository {
       }, error.message);
     });
     await this.#pool.query('COMMIT');
-    return new AddedComment({ ...result.rows[0] });
+    return new AddedComment(result.rows[0]);
   }
 
   async checkAvailabilityComment(id) {

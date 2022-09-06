@@ -52,7 +52,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       }
     });
     await this.#pool.query('COMMIT');
-    return new AddedReply({ ...result.rows[0] });
+    return new AddedReply(result.rows[0]);
   }
 
   async checkAvailabilityReply(id) {

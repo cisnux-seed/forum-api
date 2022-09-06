@@ -32,7 +32,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
       }, error.message);
     });
     await this.#pool.query('COMMIT');
-    return new AddedThread({ ...result.rows[0] });
+    return new AddedThread(result.rows[0]);
   }
 
   async checkAvailabilityThread(id) {
