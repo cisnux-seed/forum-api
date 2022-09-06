@@ -14,7 +14,7 @@ This is an open source Forum RESTful API project. This project written with java
 - Delete a reply with specific thread and comment
 
 # Installation
-```
+```console
 git clone https://github.com/cisnux-seed/forum-api.git
 npm install
 ```
