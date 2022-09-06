@@ -24,7 +24,7 @@ npm install
 ### Request
 > POST /users
 - cURL
-```
+```console
 curl --location --request POST 'http://localhost:5000/users' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -34,7 +34,7 @@ curl --location --request POST 'http://localhost:5000/users' \
 }'
 ```
 - Javascript
-```
+```javascript
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -75,7 +75,7 @@ fetch("http://localhost:5000/users", requestOptions)
 ### Request
 > POST /authentications
 - cURL
-```
+```console
 curl --location --request POST 'http://localhost:5000/authentications' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -84,7 +84,7 @@ curl --location --request POST 'http://localhost:5000/authentications' \
 }'
 ```
 - Javascript
-```
+```javascript
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -120,7 +120,7 @@ fetch("http://localhost:5000/authentications", requestOptions)
 ### Request
 > PUT /authentications
 - cURL
-```
+```console
 curl --location --request PUT 'http://localhost:5000/authentications' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -128,7 +128,7 @@ curl --location --request PUT 'http://localhost:5000/authentications' \
 }'
 ```
 - Javascript
-```
+```javascript
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -163,7 +163,7 @@ fetch("http://localhost:5000/authentications", requestOptions)
 ### Request
 > DELETE /authentications
 - cURL
-```
+```console
 curl --location --request DELETE 'http://localhost:5000/authentications' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -171,7 +171,7 @@ curl --location --request DELETE 'http://localhost:5000/authentications' \
 }'
 ```
 - Javascript
-```
+```javascript
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -202,7 +202,7 @@ fetch("http://localhost:5000/authentications", requestOptions)
 ### Request
 > POST /threads
 - cURL
-```
+```console
 curl --location --request POST 'http://localhost:5000/threads' \
 --header 'Authorization: Bearer xxxaccesstoken' \
 --header 'Content-Type: application/json' \
@@ -212,7 +212,7 @@ curl --location --request POST 'http://localhost:5000/threads' \
 }'
 ```
 - Javascript
-```
+```javascript
 var myHeaders = new Headers();
 myHeaders.append("Authorization", "Bearer xxxaccesstoken");
 myHeaders.append("Content-Type", "application/json");
@@ -252,11 +252,11 @@ fetch("http://localhost:5000/threads", requestOptions)
 ### Request
 > GET /threads/{id}
 - cURL
-```
+```console
 curl --location --request GET 'http://localhost:5000/threads/thread-123'
 ```
 - Javascript
-```
+```javascript
 var requestOptions = {
   method: 'GET',
   redirect: 'follow'
@@ -309,7 +309,7 @@ fetch("http://localhost:5000/threads/thread-123", requestOptions)
 ### Request
 > POST /comments
 - cURL
-```
+```console
 curl --location --request POST 'http://localhost:5000/threads/thread-123/comments/comment-123/replies' \
 --header 'Authorization: Bearer xxxaccesstoken' \
 --header 'Content-Type: application/json' \
@@ -318,7 +318,7 @@ curl --location --request POST 'http://localhost:5000/threads/thread-123/comment
 }'
 ```
 - Javascript
-```
+```javascript
 var myHeaders = new Headers();
 myHeaders.append("Authorization", "Bearer xxxaccesstoken");
 myHeaders.append("Content-Type", "application/json");
@@ -357,12 +357,12 @@ fetch("http://localhost:5000/threads/thread-gV33b1AZN-0nh8u3q3MOk/comments/comme
 ### Request
 > DELETE /comments/{id}
 - cURL
-```
+```console
 curl --location --request DELETE 'http://localhost:5000/threads/thread-123/comments/comment-123' \
 --header 'Authorization: Bearer xxxaccesstoken'
 ```
 - Javascript
-```
+```javascript
 var myHeaders = new Headers();
 myHeaders.append("Authorization", "Bearer xxxaccesstoken");
 
@@ -388,7 +388,7 @@ fetch("http://localhost:5000/threads/thread-123/comments/comment-123", requestOp
 ### Request
 > POST /replies
 - cURL
-```
+```console
 curl --location --request POST 'http://localhost:5000/threads/thread-123/comments/comment-123/replies' \
 --header 'Authorization: Bearer xxxaccesstoken' \
 --header 'Content-Type: application/json' \
@@ -397,7 +397,7 @@ curl --location --request POST 'http://localhost:5000/threads/thread-123/comment
 }'
 ```
 - Javascript
-```
+```javascript
 var myHeaders = new Headers();
 myHeaders.append("Authorization", "Bearer xxxaccesstoken");
 myHeaders.append("Content-Type", "application/json");
@@ -436,12 +436,12 @@ fetch("http://localhost:5000/threads/thread-123/comments/comment-123/replies", r
 ### Request
 > DELETE /replies/{id}
 - cURL
-```
+```console
 curl --location --request DELETE 'http://localhost:5000/threads/thread-123/comments/comment-123/replies/reply-123' \
 --header 'Authorization: Bearer xxxaccesstoken'
 ```
 - Javascript
-```
+```javascript
 var myHeaders = new Headers();
 myHeaders.append("Authorization", "Bearer xxxaccesstoken");
 
