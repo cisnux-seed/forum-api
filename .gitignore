@@ -5,3 +5,4 @@ package-lock.json
 .vscode
 config/database/test.json
 Forum API Test.session.sql
+forum-api.pem
