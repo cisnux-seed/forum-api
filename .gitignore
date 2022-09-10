@@ -1,6 +1,8 @@
 coverage
 node_modules
 package-lock.json
+.github
+.env
 .idea
 .vscode
 config/database/test.json
