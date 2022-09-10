@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js | npx pino-pretty",
+    "start": "pm2-runtime node src/app.js | npx pino-pretty",
     "start:dev": "nodemon src/app.js | npx pino-pretty",
     "test": "cross-env NODE_ENV=test jest --setupFiles dotenv/config -i | npx pino-pretty",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage --setupFiles dotenv/config -i | npx pino-pretty",
@@ -25,7 +25,8 @@
     "instances-container": "^2.0.3",
     "nanoid": "^3.1.23",
     "pg": "^8.6.0",
-    "pino": "^6.14.0"
+    "pino": "^6.14.0",
+    "pm2": "^5.2.0"
   },
   "devDependencies": {
     "@types/jest": "^28.1.3",
