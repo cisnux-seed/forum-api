@@ -1,4 +1,5 @@
 ![example workflow](https://github.com/cisnux-seed/forum-api/actions/workflows/ci.yml/badge.svg)
+![example workflow](https://github.com/cisnux-seed/forum-api/actions/workflows/cd.yml/badge.svg)
 [![codecov](https://codecov.io/gh/cisnux-seed/forum-api/branch//graph/badge.svg?token=6GUMNJ6FV6)](https://codecov.io/gh/cisnux-seed/forum-api)
 
 # Forum RESTful API
