@@ -9,6 +9,7 @@ describe('a CommentReplyDetail entity', () => {
       content: 'a content',
       date: '2020-01-01T00:00:00Z',
       username: 'user123',
+      replies: [],
     };
 
     // Action and Assert
@@ -23,6 +24,7 @@ describe('a CommentReplyDetail entity', () => {
       date: false,
       username: 'user123',
       replies: 23,
+      likeCount: false,
     };
 
     // Action and Assert
@@ -44,6 +46,7 @@ describe('a CommentReplyDetail entity', () => {
           username: 'user127',
         }),
       ],
+      likeCount: 21,
     };
 
     // Action
@@ -53,6 +56,7 @@ describe('a CommentReplyDetail entity', () => {
       content,
       date,
       replies,
+      likeCount,
     } = new CommentReplyDetail(payload);
 
     // Assert
@@ -61,6 +65,7 @@ describe('a CommentReplyDetail entity', () => {
     expect(content).toEqual(payload.content);
     expect(date).toEqual(payload.date);
     expect(replies).toEqual(payload.replies);
+    expect(likeCount).toEqual(payload.likeCount);
   });
 
   describe('fromTable function', () => {
@@ -80,6 +85,7 @@ describe('a CommentReplyDetail entity', () => {
             username: 'user127',
           },
         ],
+        likeCount: 21,
       };
 
       // Action
@@ -89,6 +95,7 @@ describe('a CommentReplyDetail entity', () => {
         content,
         date,
         replies,
+        likeCount,
       } = CommentReplyDetail.fromTable(payload);
 
       // Assert
@@ -97,6 +104,7 @@ describe('a CommentReplyDetail entity', () => {
       expect(content).toEqual('**komentar telah dihapus**');
       expect(date).toEqual(payload.date);
       expect(replies).toEqual(payload.replies);
+      expect(likeCount).toEqual(payload.likeCount);
     });
 
     it('should return CommentReplyDetail object correctly has not been deleted', () => {
@@ -114,6 +122,7 @@ describe('a CommentReplyDetail entity', () => {
             username: 'user127',
           },
         ],
+        likeCount: 21,
       };
 
       // Action
@@ -123,6 +132,7 @@ describe('a CommentReplyDetail entity', () => {
         content,
         date,
         replies,
+        likeCount,
       } = CommentReplyDetail.fromTable(payload);
 
       // Assert
@@ -131,6 +141,7 @@ describe('a CommentReplyDetail entity', () => {
       expect(content).toEqual(payload.content);
       expect(date).toEqual(payload.date);
       expect(replies).toEqual(payload.replies);
+      expect(likeCount).toEqual(payload.likeCount);
     });
 
     it('should return CommentReplyDetail object with empty replies', () => {
@@ -142,6 +153,7 @@ describe('a CommentReplyDetail entity', () => {
         username: 'user123',
         date: '2020-01-01T00:00:00Z',
         replies: null,
+        likeCount: 21,
       };
 
       // Action
@@ -151,6 +163,7 @@ describe('a CommentReplyDetail entity', () => {
         content,
         date,
         replies,
+        likeCount,
       } = CommentReplyDetail.fromTable(payload);
 
       // Assert
@@ -159,6 +172,7 @@ describe('a CommentReplyDetail entity', () => {
       expect(content).toEqual(payload.content);
       expect(date).toEqual(payload.date);
       expect(replies).toEqual([]);
+      expect(likeCount).toEqual(payload.likeCount);
     });
   });
 });
