@@ -26,11 +26,11 @@ jobs:
           npm run test:coverage
         env:
           CI: true
-          PGHOST_TEST: ${{ secrets.PGHOST_TEST }}
-          PGUSER_TEST: ${{ secrets.PGUSER_TEST }}
-          PGDATABASE_TEST: ${{ secrets.PGDATABASE_TEST }}
-          PGPASSWORD_TEST: ${{ secrets.PGPASSWORD_TEST }}
-          PGPORT_TEST: ${{ secrets.PGPORT_TEST }}
+          PGHOST: ${{ secrets.PGHOST }}
+          PGUSER: ${{ secrets.PGUSER }}
+          PGDATABASE: ${{ secrets.PGDATABASE }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD }}
+          PGPORT: ${{ secrets.PGPORT }}
           ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
           REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
           ACCCESS_TOKEN_AGE: ${{ secrets.ACCCESS_TOKEN_AGE }}
