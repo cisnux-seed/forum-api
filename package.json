@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "node src/app.js | npx pino-pretty",
     "start:dev": "nodemon src/app.js | npx pino-pretty",
     "test": "cross-env NODE_ENV=test jest --setupFiles dotenv/config -i | npx pino-pretty",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage --setupFiles dotenv/config -i | npx pino-pretty",
