@@ -35,4 +35,4 @@ jobs:
           REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
           ACCCESS_TOKEN_AGE: ${{ secrets.ACCCESS_TOKEN_AGE }}
       - name: share coverage to codecov
-        uses: codecov/codecov-ation@v3.1.0
+        uses: codecov/codecov-action@v3.1.0
