@@ -18,7 +18,7 @@ This is an open source Forum RESTful API project. This project written with java
 - Delete a comment with specific thread
 - Add a reply to specific comment
 - Delete a reply with specific thread and comment
-- Add like to spec
+- Add like to specific comment
 
 # Installation
 
