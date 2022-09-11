@@ -193,68 +193,6 @@ describe('CommentRepository postgres', () => {
     });
   });
 
-  describe('deleteLikeById function', () => {
-    it('should delete like byId correctly', async () => {
-      // Arrange
-      const commentRepository = new CommentRepositoryPostgres(pool);
-      await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
-      // create another user
-      await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
-      await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124' });
-      const payload = { id: 'comment-123', userId: 'user-123' };
-      await CommentsTableTestHelper.addLikeById({ userId: 'user-124' });
-
-      // Action and Assert
-      await expect(commentRepository.deleteLikeById(payload)).resolves.not.toThrowError();
-      const commentLikes = await CommentsTableTestHelper.findCommentLikeById(payload);
-      expect(commentLikes).toHaveLength(0);
-    });
-  });
-
-  describe('addLikeById function', () => {
-    it('should add like by when like does not exist yet', async () => {
-      // Arrange
-      const commentRepository = new CommentRepositoryPostgres(pool);
-      await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
-      // create another user
-      await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
-      await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124' });
-      const payload = { id: 'comment-123', userId: 'user-123' };
-
-      // Action
-      const rowAffects = await commentRepository.addLikeById(payload);
-
-      // Assert
-      expect(rowAffects).toEqual(1);
-      const commentLikes = await CommentsTableTestHelper.findCommentLikeById(payload);
-      // check comment likes rows
-      expect(commentLikes).toHaveLength(1);
-    });
-
-    it('should not add like by when like exist', async () => {
-      // Arrange
-      const commentRepository = new CommentRepositoryPostgres(pool);
-      await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
-      // create another user
-      await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
-      await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124' });
-      const payload = { id: 'comment-123', userId: 'user-123' };
-      await CommentsTableTestHelper.addLikeById({});
-
-      // Action
-      const rowAffects = await commentRepository.addLikeById(payload);
-
-      // Assert
-      expect(rowAffects).toEqual(0);
-      const commentLikes = await CommentsTableTestHelper.findCommentLikeById(payload);
-      // check comment likes rows
-      expect(commentLikes).toHaveLength(1);
-    });
-  });
-
   describe('getCommentsByThreadId function', () => {
     it('should return comments by thread id correctly', async () => {
       // Arrange

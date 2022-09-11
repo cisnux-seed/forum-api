@@ -7,4 +7,3 @@ package-lock.json
 config/database/test.json
 Forum API Test.session.sql
 forum-api-application.pem
-src/Domains/comment_likes
