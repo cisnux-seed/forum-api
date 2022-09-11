@@ -90,6 +90,39 @@ class CommentRepositoryPostgres extends CommentRepository {
     }
   }
 
+  async addLikeById({ id, userId }) {
+    const query = {
+      text: 'INSERT INTO comment_likes VALUES($1,$2) ON CONFLICT DO NOTHING',
+      values: [userId, id],
+    };
+    await this.#pool.query('BEGIN');
+    const result = await this.#pool.query(query).catch(async (error) => {
+      await this.#pool.query('ROLLBACK');
+      /* istanbul ignore next */logger.debug({
+        postgres_error_code: error.code,
+        error: 'Server Error',
+      }, error.message);
+    });
+    await this.#pool.query('COMMIT');
+    return result.rowCount;
+  }
+
+  async deleteLikeById({ id, userId }) {
+    const query = {
+      text: 'DELETE FROM comment_likes WHERE id = $1 AND user_id = $2',
+      values: [userId, id],
+    };
+    await this.#pool.query('BEGIN');
+    await this.#pool.query(query).catch(async (error) => {
+      await this.#pool.query('ROLLBACK');
+      /* istanbul ignore next */logger.debug({
+        postgres_error_code: error.code,
+        error: 'Server Error',
+      }, error.message);
+    });
+    await this.#pool.query('COMMIT');
+  }
+
   async deleteCommentById(id) {
     const isDelete = true;
 

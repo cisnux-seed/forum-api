@@ -203,12 +203,11 @@ describe('CommentRepository postgres', () => {
       await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
       await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124' });
       const payload = { id: 'comment-123', userId: 'user-123' };
-      CommentsTableTestHelper.addLikeById({ userId: 'user-124' });
+      await CommentsTableTestHelper.addLikeById({ userId: 'user-124' });
 
       // Action and Assert
-      await expect(commentRepository.deleteLikeById(payload)
-        .resolves.not.toThrow());
-      const commentLikes = CommentsTableTestHelper.findCommentLikeById(payload);
+      await expect(commentRepository.deleteLikeById(payload)).resolves.not.toThrowError();
+      const commentLikes = await CommentsTableTestHelper.findCommentLikeById(payload);
       expect(commentLikes).toHaveLength(0);
     });
   });
@@ -225,11 +224,11 @@ describe('CommentRepository postgres', () => {
       const payload = { id: 'comment-123', userId: 'user-123' };
 
       // Action
-      const rowAffects = commentRepository.addLikeById(payload);
+      const rowAffects = await commentRepository.addLikeById(payload);
 
       // Assert
       expect(rowAffects).toEqual(1);
-      const commentLikes = CommentsTableTestHelper.findCommentLikeById(payload);
+      const commentLikes = await CommentsTableTestHelper.findCommentLikeById(payload);
       // check comment likes rows
       expect(commentLikes).toHaveLength(1);
     });
@@ -243,13 +242,14 @@ describe('CommentRepository postgres', () => {
       await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
       await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124' });
       const payload = { id: 'comment-123', userId: 'user-123' };
+      await CommentsTableTestHelper.addLikeById({});
 
       // Action
-      const rowAffects = commentRepository.addLikeById(payload);
+      const rowAffects = await commentRepository.addLikeById(payload);
 
       // Assert
       expect(rowAffects).toEqual(0);
-      const commentLikes = CommentsTableTestHelper.findCommentLikeById(payload);
+      const commentLikes = await CommentsTableTestHelper.findCommentLikeById(payload);
       // check comment likes rows
       expect(commentLikes).toHaveLength(1);
     });
