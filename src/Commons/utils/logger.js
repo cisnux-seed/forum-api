@@ -7,5 +7,6 @@ module.exports = pinoLogger(
     formatters: {
       level: (label) => ({ level: label }),
     },
+    serializers: pinoLogger.stdSerializers.err,
   },
 );

@@ -65,6 +65,8 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'checkAvailabilityReply',
+        trace: error,
       }, error.message);
     });
 
@@ -87,6 +89,8 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'verifyReplyOwner',
+        trace: error,
       }, error.message);
     });
 
@@ -112,6 +116,8 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'deleteReplyById',
+        trace: error,
       }, error.message);
     });
     await this.#pool.query('COMMIT');
@@ -134,6 +140,8 @@ class ReplyRepositoryPostgres extends ReplyRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'getRepliesByCommentIds',
+        trace: error,
       }, error.message);
     });
 

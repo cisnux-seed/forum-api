@@ -35,6 +35,8 @@ class UserRepositoryPostgres extends UserRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'addUser',
+        trace: error,
       }, error.message);
     });
     await this.#pool.query('COMMIT');
@@ -51,12 +53,13 @@ class UserRepositoryPostgres extends UserRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'getPasswordByUsername',
+        trace: error,
       }, error.message);
     });
 
     if (!result.rowCount) {
       /* istanbul ignore next */logger.debug({
-        postgres_error_code: InvariantError.name,
         error: InvariantError.name,
       }, 'username is invalid');
       throw new InvariantError('username tidak ditemukan');
@@ -75,12 +78,13 @@ class UserRepositoryPostgres extends UserRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'getIdByUsername',
+        trace: error,
       }, error.message);
     });
 
     if (!result.rowCount) {
       /* istanbul ignore next */logger.debug({
-        postgres_error_code: InvariantError.name,
         error: InvariantError.name,
       }, 'user is invalid');
       throw new InvariantError('user tidak valid');

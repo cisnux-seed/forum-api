@@ -26,7 +26,7 @@ class CommentReplyDetail {
     }
 
     if (typeof id !== 'string' || typeof content !== 'string' || typeof date !== 'string'
-    || typeof username !== 'string' || !Array.isArray(replies) || typeof likeCount !== 'string') {
+    || typeof username !== 'string' || !Array.isArray(replies) || typeof likeCount !== 'number') {
       throw new Error('COMMENT_REPLY_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }
@@ -40,7 +40,7 @@ class CommentReplyDetail {
       date: date.toString(),
       username,
       replies: !isUndefined(replies) ? replies.map((reply) => ReplyDetail.fromTable(reply)) : [],
-      likeCount,
+      likeCount: parseInt(likeCount, 10),
     });
   }
 }

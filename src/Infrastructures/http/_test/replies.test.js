@@ -36,7 +36,7 @@ describe('/replies endpoint', () => {
     await pool.end();
   });
 
-  describe('when POST /replies', () => {
+  describe('when POST /threads/{threadId}/comments/{commentId}/replies', () => {
     it('should response 201 and persisted reply', async () => {
       // Arrange
       const requestPayload = {
@@ -177,7 +177,7 @@ describe('/replies endpoint', () => {
     });
   });
 
-  describe('when DELETE /comments', () => {
+  describe('when DELETE /threads/{threadId}/comments/{commentId}/replies/{replyId}', () => {
     it('should response 404 when comment not found', async () => {
       // Arrange
       const server = await createServer(container);

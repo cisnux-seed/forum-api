@@ -48,7 +48,7 @@ describe('GetThreadDetailUseCase', () => {
         content: 'a content',
         date: '2020-01-01T00:00:00Z',
         isDelete: false,
-        likeCount: '21',
+        likeCount: 21,
       },
     ];
     const repliesStubPayload = [
@@ -89,7 +89,7 @@ describe('GetThreadDetailUseCase', () => {
               date: '2020-04-01T00:00:00Z',
             }),
           ],
-          likeCount: '21',
+          likeCount: 21,
         }),
       ],
     });

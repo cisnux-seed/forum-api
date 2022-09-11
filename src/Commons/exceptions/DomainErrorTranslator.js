@@ -51,6 +51,11 @@ class DomainErrorTranslator {
     'DELETE_REPLY.EMPTY_COMMENT_ID': new InvariantError('comment id tidak boleh kosong'),
     'DELETE_REPLY.EMPTY_THREAD_ID': new InvariantError('thread id tidak boleh kosong'),
     'DELETE_REPLY.EMPTY_OWNER': new InvariantError('owner tidak boleh kosong'),
+    'COMMENT_LIKE.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat menambahkan like karen properti yang dibutuhkan tidak ada'),
+    'COMMENT_LIKE.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('threadId, userId, dan commentId harus string'),
+    'COMMENT_LIKE.EMPTY_ID': new InvariantError('comment id tidak boleh kosong'),
+    'COMMENT_LIKE.EMPTY_THREAD_ID': new InvariantError('thread id tidak boleh kosong'),
+    'COMMENT_LIKE.EMPTY_USER_ID': new InvariantError('user id tidak boleh kosong'),
   };
 
   static translate(error) {

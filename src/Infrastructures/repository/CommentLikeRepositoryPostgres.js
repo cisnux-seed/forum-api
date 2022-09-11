@@ -20,6 +20,8 @@ class CommentRepositoryPostgres extends CommentLikeRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'addLikeById',
+        trace: error,
       }, error.message);
     });
     await this.#pool.query('COMMIT');
@@ -28,8 +30,8 @@ class CommentRepositoryPostgres extends CommentLikeRepository {
 
   async deleteLikeById({ id, userId }) {
     const query = {
-      text: 'DELETE FROM comment_likes WHERE id = $1 AND user_id = $2',
-      values: [userId, id],
+      text: 'DELETE FROM comment_likes WHERE comment_id = $1 AND user_id = $2',
+      values: [id, userId],
     };
     await this.#pool.query('BEGIN');
     await this.#pool.query(query).catch(/* istanbul ignore next */async (error) => {
@@ -37,6 +39,8 @@ class CommentRepositoryPostgres extends CommentLikeRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'deleteLikeById',
+        trace: error,
       }, error.message);
     });
     await this.#pool.query('COMMIT');
