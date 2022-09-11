@@ -23,6 +23,8 @@ class AuthenticationRepositoryPostgres extends AuthenticationRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'addToken',
+        trace: error,
       }, error.message);
       /* istanbul ignore next */await this.#pool.query('ROLLBACK');
     }
@@ -38,6 +40,8 @@ class AuthenticationRepositoryPostgres extends AuthenticationRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'checkAvailabilityToken',
+        trace: error,
       }, error.message);
     });
 
@@ -62,6 +66,8 @@ class AuthenticationRepositoryPostgres extends AuthenticationRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'deleteToken',
+        trace: error,
       }, error.message);
       /* istanbul ignore next */await this.#pool.query('ROLLBACK');
     }

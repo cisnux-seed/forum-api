@@ -14,8 +14,8 @@ class RepliesHandler {
   async postReplyHandler(request, h) {
     const { threadId, commentId } = request.params;
     const { id: owner } = request.auth.credentials;
-    const addCommentUserCase = this.#container.getInstance(AddReplyUseCase.name);
-    const addedReply = await addCommentUserCase.execute({
+    const addCommentUseCase = this.#container.getInstance(AddReplyUseCase.name);
+    const addedReply = await addCommentUseCase.execute({
       owner, threadId, commentId, ...request.payload,
     });
 
@@ -32,8 +32,8 @@ class RepliesHandler {
   async deleteReplyByIdHandler(request) {
     const { threadId, commentId, replyId: id } = request.params;
     const { id: owner } = request.auth.credentials;
-    const deleteReplyUserCase = this.#container.getInstance(DeleteReplyUseCase.name);
-    await deleteReplyUserCase.execute({
+    const deleteReplyUseCase = this.#container.getInstance(DeleteReplyUseCase.name);
+    await deleteReplyUseCase.execute({
       id, owner, commentId, threadId,
     });
     return {

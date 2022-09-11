@@ -29,6 +29,8 @@ class ThreadRepositoryPostgres extends ThreadRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'addThread',
+        trace: error,
       }, error.message);
     });
     await this.#pool.query('COMMIT');
@@ -45,6 +47,8 @@ class ThreadRepositoryPostgres extends ThreadRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'checkAvailabilityThread',
+        trace: error,
       }, error.message);
     });
 
@@ -67,6 +71,8 @@ class ThreadRepositoryPostgres extends ThreadRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'getThreadById',
+        trace: error,
       }, error.message);
     });
 

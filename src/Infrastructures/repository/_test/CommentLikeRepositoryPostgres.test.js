@@ -27,7 +27,7 @@ describe('CommentRepository postgres', () => {
       await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
       await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124' });
       const payload = { id: 'comment-123', userId: 'user-123' };
-      await CommentLikesTableTestHelper.addLikeById({ userId: 'user-124' });
+      await CommentLikesTableTestHelper.addLikeById(payload);
 
       // Action and Assert
       await expect(commentLikeRepository.deleteLikeById(payload)).resolves.not.toThrowError();

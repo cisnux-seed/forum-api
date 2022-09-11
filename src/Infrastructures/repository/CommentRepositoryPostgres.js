@@ -41,6 +41,8 @@ class CommentRepositoryPostgres extends CommentRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'addComment',
+        trace: error,
       }, error.message);
     });
     await this.#pool.query('COMMIT');
@@ -57,6 +59,8 @@ class CommentRepositoryPostgres extends CommentRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'checkAvailabilityComment',
+        trace: error,
       }, error.message);
     });
 
@@ -79,6 +83,8 @@ class CommentRepositoryPostgres extends CommentRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'verifyCommentOwner',
+        trace: error,
       }, error.message);
     });
 
@@ -104,6 +110,8 @@ class CommentRepositoryPostgres extends CommentRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'deleteCommentById',
+        trace: error,
       }, error.message);
     });
     await this.#pool.query('COMMIT');
@@ -129,6 +137,8 @@ class CommentRepositoryPostgres extends CommentRepository {
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
+        method: 'getCommentsByThreadId',
+        trace: error,
       }, error.message);
     });
 
