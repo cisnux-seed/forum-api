@@ -96,8 +96,8 @@ class CommentRepositoryPostgres extends CommentRepository {
       values: [userId, id],
     };
     await this.#pool.query('BEGIN');
-    const result = await this.#pool.query(query).catch(async (error) => {
-      await this.#pool.query('ROLLBACK');
+    const result = await this.#pool.query(query).catch(/* istanbul ignore next */async (error) => {
+      /* istanbul ignore next */ await this.#pool.query('ROLLBACK');
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
@@ -113,8 +113,8 @@ class CommentRepositoryPostgres extends CommentRepository {
       values: [userId, id],
     };
     await this.#pool.query('BEGIN');
-    await this.#pool.query(query).catch(async (error) => {
-      await this.#pool.query('ROLLBACK');
+    await this.#pool.query(query).catch(/* istanbul ignore next */async (error) => {
+      /* istanbul ignore next */await this.#pool.query('ROLLBACK');
       /* istanbul ignore next */logger.debug({
         postgres_error_code: error.code,
         error: 'Server Error',
