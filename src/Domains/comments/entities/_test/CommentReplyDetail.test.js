@@ -46,7 +46,7 @@ describe('a CommentReplyDetail entity', () => {
           username: 'user127',
         }),
       ],
-      likeCount: 21,
+      likeCount: '21',
     };
 
     // Action
@@ -85,7 +85,7 @@ describe('a CommentReplyDetail entity', () => {
             username: 'user127',
           },
         ],
-        likeCount: 21,
+        likeCount: '21',
       };
 
       // Action
@@ -122,7 +122,7 @@ describe('a CommentReplyDetail entity', () => {
             username: 'user127',
           },
         ],
-        likeCount: 21,
+        likeCount: '21',
       };
 
       // Action
@@ -153,7 +153,7 @@ describe('a CommentReplyDetail entity', () => {
         username: 'user123',
         date: '2020-01-01T00:00:00Z',
         replies: null,
-        likeCount: 21,
+        likeCount: '21',
       };
 
       // Action

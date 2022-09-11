@@ -54,6 +54,7 @@ describe('a ThreadDetail entity', () => {
               date: '2020-04-01T00:00:00Z',
             }),
           ],
+          likeCount: '21',
         }),
       ],
     };
@@ -97,6 +98,7 @@ describe('a ThreadDetail entity', () => {
                 date: '2020-04-01T00:00:00Z',
               },
             ],
+            likeCount: '21',
           },
         ],
       };
@@ -121,6 +123,7 @@ describe('a ThreadDetail entity', () => {
                 date: '2020-04-01T00:00:00Z',
               }),
             ],
+            likeCount: '21',
           }),
         ],
       });
@@ -163,6 +166,7 @@ describe('a ThreadDetail entity', () => {
                 date: '2020-04-01T00:00:00Z',
               },
             ],
+            likeCount: '21',
           },
         ],
       };
@@ -187,6 +191,7 @@ describe('a ThreadDetail entity', () => {
                 date: '2020-04-01T00:00:00Z',
               }),
             ],
+            likeCount: '21',
           }),
         ],
       });
