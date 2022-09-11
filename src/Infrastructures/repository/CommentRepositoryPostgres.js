@@ -90,6 +90,39 @@ class CommentRepositoryPostgres extends CommentRepository {
     }
   }
 
+  async addLikeById({ id, userId }) {
+    const query = {
+      text: 'INSERT INTO comment_likes VALUES($1,$2) ON CONFLICT DO NOTHING',
+      values: [userId, id],
+    };
+    await this.#pool.query('BEGIN');
+    const result = await this.#pool.query(query).catch(/* istanbul ignore next */async (error) => {
+      /* istanbul ignore next */ await this.#pool.query('ROLLBACK');
+      /* istanbul ignore next */logger.debug({
+        postgres_error_code: error.code,
+        error: 'Server Error',
+      }, error.message);
+    });
+    await this.#pool.query('COMMIT');
+    return result.rowCount;
+  }
+
+  async deleteLikeById({ id, userId }) {
+    const query = {
+      text: 'DELETE FROM comment_likes WHERE id = $1 AND user_id = $2',
+      values: [userId, id],
+    };
+    await this.#pool.query('BEGIN');
+    await this.#pool.query(query).catch(/* istanbul ignore next */async (error) => {
+      /* istanbul ignore next */await this.#pool.query('ROLLBACK');
+      /* istanbul ignore next */logger.debug({
+        postgres_error_code: error.code,
+        error: 'Server Error',
+      }, error.message);
+    });
+    await this.#pool.query('COMMIT');
+  }
+
   async deleteCommentById(id) {
     const isDelete = true;
 
@@ -118,8 +151,10 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async getCommentsByThreadId(threadId) {
     const query = {
-      text: `SELECT comments.id AS id, content, date, username, is_delete AS "isDelete"
-      FROM comments INNER JOIN users ON comments.owner = users.id WHERE comments.thread_id = $1 ORDER BY date ASC`,
+      text: `SELECT comments.id AS id, content, date, username, is_delete AS "isDelete", COUNT(comment_id) AS "likeCount"
+      FROM comments LEFT JOIN comment_likes ON comments.id = comment_likes.comment_id 
+      INNER JOIN users ON comments.owner = users.id WHERE comments.thread_id = $1 
+      GROUP BY comments.id, username ORDER BY date ASC`,
       values: [threadId],
     };
 

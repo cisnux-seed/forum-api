@@ -168,10 +168,10 @@ describe('CommentRepository postgres', () => {
       // Arrange
       const commentRepository = new CommentRepositoryPostgres(pool);
       await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T00:00:00' });
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
       // create another user
       await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
-      await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124', date: '2020-01-01T00:00:00' });
+      await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124' });
 
       // Action and Assert
       await expect(commentRepository.deleteCommentById('comment-130')).rejects.toThrow(NotFoundError);
@@ -181,10 +181,10 @@ describe('CommentRepository postgres', () => {
       // Arrange
       const commentRepository = new CommentRepositoryPostgres(pool);
       await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T00:00:00' });
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
       // create another user
       await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
-      await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124', date: '2020-01-01T00:00:00' });
+      await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124' });
 
       // Action and Assert
       await expect(commentRepository.deleteCommentById('comment-123')).resolves.not.toThrow(NotFoundError);
@@ -193,31 +193,104 @@ describe('CommentRepository postgres', () => {
     });
   });
 
-  describe('getCommentsByThreadId', () => {
+  describe('deleteLikeById function', () => {
+    it('should delete like byId correctly', async () => {
+      // Arrange
+      const commentRepository = new CommentRepositoryPostgres(pool);
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
+      // create another user
+      await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
+      await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124' });
+      const payload = { id: 'comment-123', userId: 'user-123' };
+      await CommentsTableTestHelper.addLikeById({ userId: 'user-124' });
+
+      // Action and Assert
+      await expect(commentRepository.deleteLikeById(payload)).resolves.not.toThrowError();
+      const commentLikes = await CommentsTableTestHelper.findCommentLikeById(payload);
+      expect(commentLikes).toHaveLength(0);
+    });
+  });
+
+  describe('addLikeById function', () => {
+    it('should add like by when like does not exist yet', async () => {
+      // Arrange
+      const commentRepository = new CommentRepositoryPostgres(pool);
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
+      // create another user
+      await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
+      await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124' });
+      const payload = { id: 'comment-123', userId: 'user-123' };
+
+      // Action
+      const rowAffects = await commentRepository.addLikeById(payload);
+
+      // Assert
+      expect(rowAffects).toEqual(1);
+      const commentLikes = await CommentsTableTestHelper.findCommentLikeById(payload);
+      // check comment likes rows
+      expect(commentLikes).toHaveLength(1);
+    });
+
+    it('should not add like by when like exist', async () => {
+      // Arrange
+      const commentRepository = new CommentRepositoryPostgres(pool);
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
+      // create another user
+      await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
+      await CommentsTableTestHelper.addComment({ threadId: 'thread-123', owner: 'user-124' });
+      const payload = { id: 'comment-123', userId: 'user-123' };
+      await CommentsTableTestHelper.addLikeById({});
+
+      // Action
+      const rowAffects = await commentRepository.addLikeById(payload);
+
+      // Assert
+      expect(rowAffects).toEqual(0);
+      const commentLikes = await CommentsTableTestHelper.findCommentLikeById(payload);
+      // check comment likes rows
+      expect(commentLikes).toHaveLength(1);
+    });
+  });
+
+  describe('getCommentsByThreadId function', () => {
     it('should return comments by thread id correctly', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T00:00:00' });
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
       // create another user
       await UsersTableTestHelper.addUser({ id: 'user-124', username: 'cisnux' });
       await CommentsTableTestHelper.addComment({
         threadId: 'thread-123',
         owner: 'user-124',
-        date: '2020-01-01T00:00:00',
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-124',
         threadId: 'thread-123',
         owner: 'user-124',
-        date: '2020-01-02T00:00:00',
       });
 
       // Action
       const commentRepository = new CommentRepositoryPostgres(pool);
       const commentsDetail = await commentRepository.getCommentsByThreadId('thread-123');
+      const [comment1, comment2] = commentsDetail;
 
       // Assert
       expect(commentsDetail).toHaveLength(2);
+      expect(comment1.id).toBeDefined();
+      expect(comment1.content).toBeDefined();
+      expect(comment1.date).toBeDefined();
+      expect(comment1.username).toBeDefined();
+      expect(comment1.isDelete).toBeDefined();
+      expect(comment1.likeCount).toBeDefined();
+      expect(comment2.id).toBeDefined();
+      expect(comment2.content).toBeDefined();
+      expect(comment2.date).toBeDefined();
+      expect(comment2.username).toBeDefined();
+      expect(comment2.isDelete).toBeDefined();
+      expect(comment2.likeCount).toBeDefined();
     });
   });
 });

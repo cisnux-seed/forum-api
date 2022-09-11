@@ -127,20 +127,18 @@ describe('/threads endpoint', () => {
     it('should response 200 and return thread detail', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T00:00:00' });
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
       // create another user
       await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
       await CommentsTableTestHelper.addComment({
         threadId: 'thread-123',
         owner: 'user-124',
-        date: '2020-01-01T00:00:00',
       });
       await UsersTableTestHelper.addUser({ id: 'user-125', username: 'user-b' });
       await RepliesTableTestHelper.addReply({
         commentId: 'comment-123',
         threadId: 'thread-123',
         owner: 'user-125',
-        date: '2020-01-01T00:00:00',
       });
       const server = await createServer(container);
 

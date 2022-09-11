@@ -193,20 +193,18 @@ describe('ReplyRepository postgres', () => {
       // Arrange
       const replyRepository = new ReplyRepositoryPostgres(pool);
       await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T00:00:00' });
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
       // create another user
       await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
       await UsersTableTestHelper.addUser({ id: 'user-125', username: 'user-b' });
       await CommentsTableTestHelper.addComment({
         threadId: 'thread-123',
         owner: 'user-124',
-        date: '2020-01-01T00:00:00',
       });
       await RepliesTableTestHelper.addReply({
         commentId: 'comment-123',
         threadId: 'thread-123',
         owner: 'user-125',
-        date: '2020-01-01T00:00:00',
       });
 
       // Action and Assert
@@ -217,20 +215,18 @@ describe('ReplyRepository postgres', () => {
       // Arrange
       const replyRepository = new ReplyRepositoryPostgres(pool);
       await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T00:00:00' });
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
       // create another user
       await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
       await UsersTableTestHelper.addUser({ id: 'user-125', username: 'user-b' });
       await CommentsTableTestHelper.addComment({
         threadId: 'thread-123',
         owner: 'user-124',
-        date: '2020-01-01T00:00:00',
       });
       await RepliesTableTestHelper.addReply({
         commentId: 'comment-123',
         threadId: 'thread-123',
         owner: 'user-125',
-        date: '2020-01-01T00:00:00',
       });
 
       // Action and Assert
@@ -240,23 +236,21 @@ describe('ReplyRepository postgres', () => {
     });
   });
 
-  describe('getRepliesByCommentIds', () => {
+  describe('getRepliesByCommentIds function', () => {
     it('should return replies by comment ids correctly', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T00:00:00' });
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
       // create another user
       await UsersTableTestHelper.addUser({ id: 'user-124', username: 'user-a' });
       await CommentsTableTestHelper.addComment({
         threadId: 'thread-123',
         owner: 'user-124',
-        date: '2020-01-01T00:00:00',
       });
       await CommentsTableTestHelper.addComment({
         id: 'comment-124',
         threadId: 'thread-123',
         owner: 'user-124',
-        date: '2020-01-01T00:00:00',
       });
       await UsersTableTestHelper.addUser({ id: 'user-125', username: 'cisnux' });
       await RepliesTableTestHelper.addReply({
@@ -274,9 +268,20 @@ describe('ReplyRepository postgres', () => {
       // Action
       const replyRepository = new ReplyRepositoryPostgres(pool);
       const repliesDetail = await replyRepository.getRepliesByCommentIds(['comment-123']);
+      const [reply1, reply2] = repliesDetail;
 
       // Assert
       expect(repliesDetail).toHaveLength(2);
+      expect(reply1.id).toBeDefined();
+      expect(reply1.content).toBeDefined();
+      expect(reply1.date).toBeDefined();
+      expect(reply1.username).toBeDefined();
+      expect(reply1.isDelete).toBeDefined();
+      expect(reply2.id).toBeDefined();
+      expect(reply2.content).toBeDefined();
+      expect(reply2.date).toBeDefined();
+      expect(reply2.username).toBeDefined();
+      expect(reply2.isDelete).toBeDefined();
     });
   });
 });

@@ -6,7 +6,7 @@ class CommentReplyDetail {
     this.#verifyPayload(payload);
 
     const {
-      id, content, date, username, replies,
+      id, content, date, username, replies, likeCount,
     } = payload;
 
     this.id = id;
@@ -14,23 +14,25 @@ class CommentReplyDetail {
     this.date = date;
     this.username = username;
     this.replies = replies;
+    this.likeCount = likeCount;
   }
 
   #verifyPayload({
-    id, content, date, username, replies,
+    id, content, date, username, replies, likeCount,
   }) {
     if (isUndefined(id) || isUndefined(content) || isUndefined(date)
-    || isUndefined(username) || isUndefined(replies)) {
+    || isUndefined(username) || isUndefined(replies) || isUndefined(likeCount)) {
       throw new Error('COMMENT_REPLY_DETAIL.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    if (typeof id !== 'string' || typeof content !== 'string' || typeof date !== 'string' || typeof username !== 'string' || !Array.isArray(replies)) {
+    if (typeof id !== 'string' || typeof content !== 'string' || typeof date !== 'string'
+    || typeof username !== 'string' || !Array.isArray(replies) || typeof likeCount !== 'string') {
       throw new Error('COMMENT_REPLY_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }
 
   static fromTable({
-    id, content, date, username, replies, isDelete,
+    id, content, date, username, replies, isDelete, likeCount,
   }) {
     return new CommentReplyDetail({
       id,
@@ -38,6 +40,7 @@ class CommentReplyDetail {
       date: date.toString(),
       username,
       replies: !isUndefined(replies) ? replies.map((reply) => ReplyDetail.fromTable(reply)) : [],
+      likeCount,
     });
   }
 }

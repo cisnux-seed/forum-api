@@ -98,7 +98,7 @@ describe('ThreadRepository postgres', () => {
     it('should return thread by id correctly', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({});
-      await ThreadsTableTestHelper.addThread({ owner: 'user-123', date: '2020-01-01T12:00:00.000Z' });
+      await ThreadsTableTestHelper.addThread({ owner: 'user-123' });
 
       // Action
       const threadRepository = new ThreadRepositoryPostgres(pool);
