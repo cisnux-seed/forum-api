@@ -4,7 +4,7 @@
 
 # Forum RESTful API
 
-This is an open source Forum RESTful API project. This project written with javascript and Hapi Framework. Forum API providing authentications with implemented JWT (Token-Based Authentication). This RESTful API project implemented automation tests and clean architecture. You can also contribute this project
+This is an open source Forum RESTful API project. This project written with javascript and Hapi Framework. Forum API providing authentications with implemented JWT (Token-Based Authentication). This RESTful API project implemented automation tests and clean architecture. You can also contribute this project. If you only want to use this API I already have domain web service [www.forum.cisnux.xyz](https://www.forum.cisnux.xyz), feel free to use it.
 
 ## Feature List
 
@@ -18,6 +18,7 @@ This is an open source Forum RESTful API project. This project written with java
 - Delete a comment with specific thread
 - Add a reply to specific comment
 - Delete a reply with specific thread and comment
+- Add like to spec
 
 # Installation
 
@@ -73,16 +74,16 @@ fetch("http://localhost:5000/users", requestOptions)
 
 ### Response
 
-```
+```json
 {
-    "status": "success",
-    "data": {
-        "addedUser": {
-            "id": "user-123",
-            "username": "ezio",
-            "fullname": "ezio auditore"
-        }
+  "status": "success",
+  "data": {
+    "addedUser": {
+      "id": "user-123",
+      "username": "ezio",
+      "fullname": "ezio auditore"
     }
+  }
 }
 ```
 
@@ -129,13 +130,13 @@ fetch("http://localhost:5000/authentications", requestOptions)
 
 ### Response
 
-```
+```json
 {
-    "status": "success",
-    "data": {
-        "accessToken": "xxxaccesstoken",
-        "refreshToken": "xxxrefreshtoken"
-    }
+  "status": "success",
+  "data": {
+    "accessToken": "xxxaccesstoken",
+    "refreshToken": "xxxrefreshtoken"
+  }
 }
 ```
 
@@ -180,12 +181,12 @@ fetch("http://localhost:5000/authentications", requestOptions)
 
 ### Response
 
-```
+```json
 {
-    "status": "success",
-    "data": {
-        "accessToken": "xxxnewaccesstoken"
-    }
+  "status": "success",
+  "data": {
+    "accessToken": "xxxnewaccesstoken"
+  }
 }
 ```
 
@@ -212,8 +213,7 @@ var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
 var raw = JSON.stringify({
-  refreshToken:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRpY29kaW5nIiwiaWQiOiJ1c2VyLURCcWUzaEN0TEo5RkN4bHEyUnd0TSIsImlhdCI6MTY2MjQ4NTgzOH0.6bC9AHcfYInd4R8rtCW9n_UeRKdrzpOkSEZ9BJEslco",
+  refreshToken: "xxxrefreshtoken",
 });
 
 var requestOptions = {
@@ -231,9 +231,9 @@ fetch("http://localhost:5000/authentications", requestOptions)
 
 ### Response
 
-```
+```json
 {
-    "status": "success"
+  "status": "success"
 }
 ```
 
@@ -282,16 +282,16 @@ fetch("http://localhost:5000/threads", requestOptions)
 
 ### Response
 
-```
+```json
 {
-    "status": "success",
-    "data": {
-        "addedThread": {
-            "id": "thread-123",
-            "owner": "user-123",
-            "title": "a thread"
-        }
+  "status": "success",
+  "data": {
+    "addedThread": {
+      "id": "thread-123",
+      "owner": "user-123",
+      "title": "a thread"
     }
+  }
 }
 ```
 
@@ -323,40 +323,36 @@ fetch("http://localhost:5000/threads/thread-123", requestOptions)
 
 ### Response
 
-```
+```json
 {
-    "status": "success",
-    "data": {
-        "thread": {
-            "id": "thread-123",
-            "title": "a thread",
-            "body": "a body",
-            "date": "Wed Sep 07 2022 01:35:46 GMT+0700 (Indochina Time)",
-            "username": "levi",
-            "comments": [
-                {
-                    "id": "comment-123",
-                    "content": "a content",
-                    "date": "Wed Sep 07 2022 01:35:46 GMT+0700 (Indochina Time)",
-                    "username": "eren",
-                    "replies": [
-                        {
-                            "id": "reply-123",
-                            "content": "a content",
-                            "date": "Wed Sep 07 2022 01:35:56 GMT+0700 (Indochina Time)",
-                            "username": "ezio"
-                        },
-                        {
-                            "id": "reply-124",
-                            "content": "a content",
-                            "date": "Wed Sep 07 2022 01:35:59 GMT+0700 (Indochina Time)",
-                            "username": "cisnux"
-                        }
-                    ]
-                }
-            ]
+  "status": "success",
+  "data": {
+    "thread": {
+      "id": "thread-IYFX5sm6YPHgzWchtpVqe",
+      "title": "sebuah thread",
+      "body": "sebuah body thread",
+      "date": "Sun Sep 11 2022 23:04:51 GMT+0000 (Coordinated Universal Time)",
+      "username": "dicoding",
+      "comments": [
+        {
+          "id": "comment--tds56yD0xqDflb_u7E7u",
+          "content": "sebuah comment",
+          "date": "Sun Sep 11 2022 23:04:52 GMT+0000 (Coordinated Universal Time)",
+          "username": "dicoding",
+          "replies": [],
+          "likeCount": 2
+        },
+        {
+          "id": "comment-hQTby6b4Z04tqVoR8I0n3",
+          "content": "sebuah comment",
+          "date": "Sun Sep 11 2022 23:04:53 GMT+0000 (Coordinated Universal Time)",
+          "username": "johndoe",
+          "replies": [],
+          "likeCount": 2
         }
+      ]
     }
+  }
 }
 ```
 
@@ -396,7 +392,7 @@ var requestOptions = {
 };
 
 fetch(
-  "http://localhost:5000/threads/thread-gV33b1AZN-0nh8u3q3MOk/comments/comment-Y-tUgVRnWyBDcw2WWjMxv/replies",
+  "http://localhost:5000/threads/thread-123/comments/comment-123/replies",
   requestOptions
 )
   .then((response) => response.text())
@@ -406,16 +402,16 @@ fetch(
 
 ### Response
 
-```
+```json
 {
-    "status": "success",
-    "data": {
-        "addedComment": {
-            "id": "comment-ZWQ617BRXuFBjRH7KYTI7",
-            "owner": "user-1_M9c0rYBStKs62Ryad2g",
-            "content": "sebuah comment"
-        }
+  "status": "success",
+  "data": {
+    "addedComment": {
+      "id": "comment-ZWQ617BRXuFBjRH7KYTI7",
+      "owner": "user-1_M9c0rYBStKs62Ryad2g",
+      "content": "sebuah comment"
     }
+  }
 }
 ```
 
@@ -455,9 +451,9 @@ fetch(
 
 ### Response
 
-```
+```json
 {
-    "status": "success"
+  "status": "success"
 }
 ```
 
@@ -507,16 +503,16 @@ fetch(
 
 ### Response
 
-```
+```json
 {
-    "status": "success",
-    "data": {
-        "addedReply": {
-            "id": "reply-123",
-            "owner": "user-123",
-            "content": "a content"
-        }
+  "status": "success",
+  "data": {
+    "addedReply": {
+      "id": "reply-123",
+      "owner": "user-123",
+      "content": "a content"
     }
+  }
 }
 ```
 
@@ -546,7 +542,7 @@ var requestOptions = {
 };
 
 fetch(
-  "http://localhost:5000/threads/thread-gV33b1AZN-0nh8u3q3MOk/comments/comment-Y-tUgVRnWyBDcw2WWjMxv/replies/reply-6qacSSFoHTAMzurkBNgXb",
+  "http://localhost:5000/threads/thread-123/comments/comment-123/replies/reply-123",
   requestOptions
 )
   .then((response) => response.text())
@@ -556,9 +552,51 @@ fetch(
 
 ### Response
 
-```
+```json
 {
-    "status": "success"
+  "status": "success"
+}
+```
+
+## Add like to specific comment
+
+### Request
+
+> PUT /threads/{threadId}/comments/{commentId}/likes
+
+- cURL
+
+```console
+curl --location --request PUT 'http://localhost:5000/threads/thread-123/comments/comment-123/likes' \
+--header 'Authorization: Bearer xxxaccesstoken'
+```
+
+- Javascript
+
+```javascript
+var myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer xxxaccesstoken");
+
+var requestOptions = {
+  method: "PUT",
+  headers: myHeaders,
+  redirect: "follow",
+};
+
+fetch(
+  "http://localhost:5000/threads/thread-123/comments/comment-123/likes",
+  requestOptions
+)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => console.log("error", error));
+```
+
+### Response
+
+```json
+{
+  "status": "success"
 }
 ```
 
