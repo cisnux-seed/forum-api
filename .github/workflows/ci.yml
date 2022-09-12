@@ -23,8 +23,8 @@ jobs:
         run: |
           npm install
           npm run migrate up
-          npm run test
-        shell: bash
+          npm run test:coverage
+        shell: bash set -eo pipefail
         env:
           CI: true
           PGHOST: ${{ secrets.PGHOST }}
