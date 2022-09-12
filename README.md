@@ -1,3 +1,6 @@
+![Continuous Integration](https://github.com/cisnux-seed/forum-api/actions/workflows/.github/workflows/ci.yml/badge.svg)
+![Continuous Deployment](https://github.com/cisnux-seed/forum-api/actions/workflows/.github/workflows/cd.yml/badge.svg)
+[![codecov](https://codecov.io/gh/cisnux-seed/forum-api/branch/master/graph/badge.svg?token=6GUMNJ6FV6)](https://codecov.io/gh/cisnux-seed/forum-api)
 # Forum RESTful API
 
 This is an open source Forum RESTful API project. This project written with javascript and Hapi Framework. Forum API providing authentications with implemented JWT (Token-Based Authentication). This RESTful API project implemented automation tests and clean architecture. You can also contribute this project. If you only want to use this API I already have domain web service [www.forum.cisnux.xyz](https://www.forum.cisnux.xyz), feel free to use it.
