@@ -16,8 +16,10 @@ class CommentLikeUseCase {
   async execute(useCasePayload) {
     const { id, threadId, userId } = new CommentLike(useCasePayload);
 
-    await this.#threadRepository.checkAvailabilityThread(threadId);
-    await this.#commentRepository.checkAvailabilityComment(id);
+    await Promise.all([
+      this.#threadRepository.checkAvailabilityThread(threadId),
+      this.#commentRepository.checkAvailabilityComment(id),
+    ]);
     const isLiked = await this.#commentLikeRepository.addLikeById({ id, userId });
     if (!isLiked) {
       await this.#commentLikeRepository.deleteLikeById({ id, userId });
