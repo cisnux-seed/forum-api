@@ -7,7 +7,7 @@
     "start": "node src/app.js | npx pino-pretty",
     "start:dev": "nodemon src/app.js | npx pino-pretty",
     "test": "cross-env NODE_ENV=test jest --setupFiles dotenv/config -i | npx pino-pretty",
-    "test:coverage": "cross-env NODE_ENV=test jest --coverage --setupFiles dotenv/config -i | npx pino-pretty",
+    "test:coverage": "cross-env NODE_ENV=test jest --forceExit --detectOpenHandles --coverage --setupFiles dotenv/config -i | npx pino-pretty",
     "test:watch:change": "cross-env NODE_ENV=test jest --watch --setupFiles dotenv/config -i | npx pino-pretty",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll --coverage --setupFiles dotenv/config -i | npx pino-pretty",
     "migrate": "node-pg-migrate",
