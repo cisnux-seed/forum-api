@@ -7,6 +7,6 @@ package-lock.json
 config/database/test.json
 Forum API Test.session.sql
 forum-api-application.pem
-Interfaces/comment_likes
-Applications/use_case/DeleteCommentUseCase.js
-Infrastructures/CommentLikeRequest.js
+/src/Interfaces/http/api/comment_likes
+/src/Applications/use_case/DeleteCommentUseCase.js
+/src/Infrastructures/repository/CommentLikeRequest.js

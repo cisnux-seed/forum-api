@@ -23,7 +23,7 @@ jobs:
         run: |
           npm install
           npm run migrate up
-          npm run test
+          npm run test:coverage
         env:
           CI: true
           PGHOST: ${{ secrets.PGHOST }}
