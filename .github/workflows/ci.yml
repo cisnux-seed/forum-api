@@ -37,7 +37,4 @@ jobs:
       - name: share coverage to codecov
         uses: codecov/codecov-action@v3.1.0
         with:
-          flags: unittests
-          token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: true
-          threshold: 100%
