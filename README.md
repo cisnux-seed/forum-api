@@ -609,5 +609,3 @@ fetch(
 you can also run manual automation tests with run this command</br>
 `npm run test:watch` and open folder coverage to see coverage result</br></br>
 ![image](https://user-images.githubusercontent.com/68740152/188715400-7175ae58-091f-4a0c-8afe-897082812107.png)
-
-> > > > > > > a9e423626b79d53f40f41189c9851449edb35a06
