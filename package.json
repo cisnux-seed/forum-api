@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/app.js | npx pino-pretty",
     "start:dev": "nodemon src/app.js | npx pino-pretty",
-    "test": "cross-env NODE_ENV=test jest --setupFiles dotenv/config -i | npx pino-pretty",
+    "test": "cross-env NODE_ENV=test jest --setupFiles dotenv/config -i",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage --setupFiles dotenv/config -i | npx pino-pretty",
     "test:watch:change": "cross-env NODE_ENV=test jest --watch --setupFiles dotenv/config -i | npx pino-pretty",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll --coverage --setupFiles dotenv/config -i | npx pino-pretty",
@@ -30,7 +30,7 @@
   "devDependencies": {
     "@types/jest": "^28.1.8",
     "cross-env": "^7.0.3",
-    "eslint": "^8.23.0",
+    "eslint": "^8.23.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "jest": "^27.5.1",
