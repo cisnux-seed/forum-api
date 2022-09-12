@@ -23,9 +23,14 @@ jobs:
         run: |
           npm install
           npm run migrate up
-          npm run test:coverage
+          npm run test
         env:
           CI: true
+          PGHOST_TEST: ${{ secrets.PGHOST }}
+          PGUSER_TEST: ${{ secrets.PGUSER }}
+          PGDATABASE_TEST: ${{ secrets.PGDATABASE }}
+          PGPASSWORD_TEST: ${{ secrets.PGPASSWORD }}
+          PGPORT_TEST: ${{ secrets.PGPORT }}
           PGHOST: ${{ secrets.PGHOST }}
           PGUSER: ${{ secrets.PGUSER }}
           PGDATABASE: ${{ secrets.PGDATABASE }}
@@ -34,5 +39,3 @@ jobs:
           ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
           REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
           ACCCESS_TOKEN _AGE: ${{ secrets.ACCCESS_TOKEN_AGE }}
-      - name: share coverage to codecov
-        uses: codecov/codecov-action@v3.1.0
