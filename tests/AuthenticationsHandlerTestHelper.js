@@ -10,7 +10,7 @@ class AuthenticationsHandlerTestHelper {
   }) {
     // add user
     const server = await createServer(container);
-    await server.inject({
+    const response = await server.inject({
       method: 'POST',
       url: '/users',
       payload: {
@@ -19,8 +19,8 @@ class AuthenticationsHandlerTestHelper {
         fullname,
       },
     });
-
-    return { username, password };
+    const responseJson = JSON.parse(response.payload);
+    return { ...responseJson.data.addedUser, password };
   }
 
   static async login({ username, password }) {

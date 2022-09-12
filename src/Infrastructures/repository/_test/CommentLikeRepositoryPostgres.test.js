@@ -18,7 +18,7 @@ describe('CommentRepository postgres', () => {
   });
 
   describe('deleteLikeById function', () => {
-    it('should delete like byId correctly', async () => {
+    it('should delete like by id correctly', async () => {
       // Arrange
       const commentLikeRepository = new CommentLikeRepositoryPostgres(pool);
       await UsersTableTestHelper.addUser({});
@@ -37,7 +37,7 @@ describe('CommentRepository postgres', () => {
   });
 
   describe('addLikeById function', () => {
-    it('should add like by when like does not exist yet', async () => {
+    it('should add like when like does not exist yet', async () => {
       // Arrange
       const commentLikeRepository = new CommentLikeRepositoryPostgres(pool);
       await UsersTableTestHelper.addUser({});
@@ -57,7 +57,7 @@ describe('CommentRepository postgres', () => {
       expect(commentLikes).toHaveLength(1);
     });
 
-    it('should not add like by when like exist', async () => {
+    it('should not add like when like exist', async () => {
       // Arrange
       const commentLikeRepository = new CommentLikeRepositoryPostgres(pool);
       await UsersTableTestHelper.addUser({});
