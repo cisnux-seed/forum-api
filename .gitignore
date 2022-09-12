@@ -8,3 +8,5 @@ config/database/test.json
 Forum API Test.session.sql
 forum-api-application.pem
 Interfaces/comment_likes
+Applications/use_case/DeleteCommentUseCase.js
+Infrastructures/CommentLikeRequest.js
