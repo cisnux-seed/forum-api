@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
       - uses: actions/checkout@v2
@@ -26,16 +27,16 @@ jobs:
           npm run test
         env:
           CI: true
-          PGHOST_TEST: ${{ secrets.PGHOST }}
-          PGUSER_TEST: ${{ secrets.PGUSER }}
-          PGDATABASE_TEST: ${{ secrets.PGDATABASE }}
-          PGPASSWORD_TEST: ${{ secrets.PGPASSWORD }}
-          PGPORT_TEST: ${{ secrets.PGPORT }}
-          PGHOST: ${{ secrets.PGHOST }}
-          PGUSER: ${{ secrets.PGUSER }}
-          PGDATABASE: ${{ secrets.PGDATABASE }}
-          PGPASSWORD: ${{ secrets.PGPASSWORD }}
-          PGPORT: ${{ secrets.PGPORT }}
+          PGHOST_TEST: ${{ secrets.PGHOST_TEST }}
+          PGUSER_TEST: ${{ secrets.PGUSER_TEST }}
+          PGDATABASE_TEST: ${{ secrets.PGDATABASE_TEST }}
+          PGPASSWORD_TEST: ${{ secrets.PGPASSWORD_TEST }}
+          PGPORT_TEST: ${{ secrets.PGPORT_TEST }}
+          PGHOST: ${{ secrets.PGHOST_TEST }}
+          PGUSER: ${{ secrets.PGUSER_TEST }}
+          PGDATABASE: ${{ secrets.PGDATABASE_TEST }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD_TEST }}
+          PGPORT: ${{ secrets.PGPORT_TEST }}
           ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
           REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
-          ACCCESS_TOKEN _AGE: ${{ secrets.ACCCESS_TOKEN_AGE }}
+          ACCCESS_TOKEN_AGE: ${{ secrets.ACCCESS_TOKEN_AGE }}
