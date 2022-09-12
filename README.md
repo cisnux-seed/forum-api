@@ -328,27 +328,27 @@ fetch("http://localhost:5000/threads/thread-123", requestOptions)
   "status": "success",
   "data": {
     "thread": {
-      "id": "thread-FEL6kdG-L81DBjpeQdMdD",
-      "title": "sebuah thread",
+      "id": "thread-123",
+      "title": "a title",
       "body": "sebuah body thread",
       "date": "Mon Sep 12 2022 07:23:19 GMT+0700 (Indochina Time)",
       "username": "dicoding",
       "comments": [
         {
-          "id": "comment-4-EHIuWk1IZCo7e0i0bf2",
-          "content": "sebuah comment",
+          "id": "comment-123",
+          "content": "a content",
           "date": "Mon Sep 12 2022 07:23:19 GMT+0700 (Indochina Time)",
           "username": "dicoding",
           "replies": [
             {
-              "id": "reply-NoJXi0zf9uC0AWv0F664I",
+              "id": "reply-123",
               "content": "**balasan telah dihapus**",
               "date": "Mon Sep 12 2022 07:23:41 GMT+0700 (Indochina Time)",
               "username": "johndoe"
             },
             {
-              "id": "reply-u3ckadn0iFRKsQRdmbvua",
-              "content": "sebuah balasan",
+              "id": "reply-123",
+              "content": "a content",
               "date": "Mon Sep 12 2022 07:23:44 GMT+0700 (Indochina Time)",
               "username": "dicoding"
             }
