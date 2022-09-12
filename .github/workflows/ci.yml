@@ -24,7 +24,7 @@ jobs:
           npm install
           npm run migrate up
           npm run test:coverage
-        shell: bash set -eo pipefail
+        shell: bash -ileo pipefail {0}
         env:
           CI: true
           PGHOST: ${{ secrets.PGHOST }}
