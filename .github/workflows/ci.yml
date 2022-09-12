@@ -24,10 +24,6 @@ jobs:
           npm install
           npm run migrate up
           npm run test:coverage
-      - name: Failing Test
-        if: ${{ failure() }}
-        run: |
-          exit
         env:
           CI: true
           PGHOST: ${{ secrets.PGHOST }}
