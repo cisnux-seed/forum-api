@@ -24,10 +24,6 @@ jobs:
           npm install
           npm run migrate up
           npm run test:coverage
-      - name: Failing Test
-        if: ${{ failure() }}
-        run: |
-          exit
         env:
           CI: true
           PGHOST: ${{ secrets.PGHOST }}
@@ -37,6 +33,6 @@ jobs:
           PGPORT: ${{ secrets.PGPORT }}
           ACCESS_TOKEN_KEY: ${{ secrets.ACCESS_TOKEN_KEY }}
           REFRESH_TOKEN_KEY: ${{ secrets.REFRESH_TOKEN_KEY }}
-          ACCCESS_TOKEN_AGE: ${{ secrets.ACCCESS_TOKEN_AGE }}
+          ACCCESS_TOKEN _AGE: ${{ secrets.ACCCESS_TOKEN_AGE }}
       - name: share coverage to codecov
         uses: codecov/codecov-action@v3.1.0
