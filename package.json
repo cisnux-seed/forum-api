@@ -7,9 +7,9 @@
     "start": "node src/app.js | npx pino-pretty",
     "start:dev": "nodemon src/app.js | npx pino-pretty",
     "test": "cross-env NODE_ENV=test jest --setupFiles dotenv/config -i",
-    "test:coverage": "cross-env NODE_ENV=test jest --coverage --setupFiles dotenv/config -i | npx pino-pretty",
-    "test:watch:change": "cross-env NODE_ENV=test jest --watch --setupFiles dotenv/config -i | npx pino-pretty",
-    "test:watch": "cross-env NODE_ENV=test jest --watchAll --coverage --setupFiles dotenv/config -i | npx pino-pretty",
+    "test:coverage": "cross-env NODE_ENV=test jest --colors --coverage --setupFiles dotenv/config -i | npx pino-pretty",
+    "test:watch:change": "cross-env NODE_ENV=test jest --colors --watch --setupFiles dotenv/config -i | npx pino-pretty",
+    "test:watch": "cross-env NODE_ENV=test jest --colors --watchAll --coverage --setupFiles dotenv/config -i | npx pino-pretty",
     "migrate": "node-pg-migrate",
     "migrate:test": "node-pg-migrate -f config/database/test.json",
     "eslint": "eslint src/** migrations/**"
@@ -30,12 +30,12 @@
   "devDependencies": {
     "@types/jest": "^28.1.8",
     "cross-env": "^7.0.3",
-    "eslint": "^8.23.1",
+    "eslint": "^8.24.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "jest": "^27.5.1",
     "node-pg-migrate": "^5.10.0",
-    "nodemon": "^2.0.19",
+    "nodemon": "^2.0.20",
     "pino-pretty": "^9.1.0"
   }
 }
